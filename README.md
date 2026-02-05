@@ -40,9 +40,9 @@
 
 1. 环境准备：确保本地安装了 JDK 17 或更高版本。
 2. 克隆仓库：
-   ```bash
-   git clone https://github.com/mlfc666/CommonEnv.git
-   ```
+```bash
+git clone https://github.com/mlfc666/CommonEnv.git
+```
 (或者直接运行jar包)
 ```bash
 java -jar CommonEnv-SNAPSHOT.jar
