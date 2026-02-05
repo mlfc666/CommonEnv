@@ -18,6 +18,10 @@ public class MonsterServiceImpl implements IMonsterService {
             throw new IllegalMonsterException("怪兽对象不能为空");
         }
 
+        if (monster.getAge() < 0) {
+            throw new IllegalMonsterException("年龄不能小于0");
+        }
+
         if (repository.existsByName(monster.getName())) {
             // 已存在
             throw new IllegalMonsterException("怪兽名称 [" + monster.getName() + "] 已存在，请更换名称");
