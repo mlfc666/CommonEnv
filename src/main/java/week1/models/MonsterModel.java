@@ -1,5 +1,7 @@
 package week1.models;
 
+import week1.ui.ConsoleColors;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -54,6 +56,34 @@ public class MonsterModel {
         return name;
     }
 
+    @Override
+    public String toString() {
+        // 标题加上颜色
+        String coloredTitles = storyList.stream()
+                .map(s -> ConsoleColors.YELLOW + "《" + s.getTitle() + "》" + ConsoleColors.RESET)
+                .collect(java.util.stream.Collectors.joining(", "));
+
+        return """
+            %s-------------------------------------------%s
+            | %s%s怪兽档案%s
+            | 姓名: %s%s%s
+            | 年龄: %s%d 岁%s
+            | 介绍: %s%s%s
+            | 故事记录: %s已拥有 %d 个故事%s
+            | 故事列表： %s
+            %s-------------------------------------------%s
+            """.formatted(
+                ConsoleColors.BLUE, ConsoleColors.RESET,           // 分割线
+                ConsoleColors.BOLD, ConsoleColors.GREEN, ConsoleColors.RESET, // 标题
+                ConsoleColors.CYAN, name, ConsoleColors.RESET,      // 姓名
+                ConsoleColors.CYAN, age, ConsoleColors.RESET,       // 年龄
+                ConsoleColors.GREEN, desc, ConsoleColors.RESET,     // 介绍
+                ConsoleColors.PURPLE, storyList.size(), ConsoleColors.RESET, // 统计
+                coloredTitles,                                      // 列表
+                ConsoleColors.BLUE, ConsoleColors.RESET            // 分割线
+        );
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -72,11 +102,6 @@ public class MonsterModel {
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("【怪兽: %s | 年龄: %d | 故事数: %d】", name, age, getStoryCount());
     }
 
     @Override

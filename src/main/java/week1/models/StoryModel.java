@@ -1,6 +1,7 @@
 package week1.models;
 
 import week1.enums.StoryEnum;
+import week1.ui.ConsoleColors;
 import week1.utils.DateUtil;
 
 import java.util.Objects;
@@ -31,6 +32,17 @@ public class StoryModel {
     @Override
     public int hashCode() {
         return Objects.hash(title);
+    }
+
+    @Override
+    public String toString() {
+        // 标题、类型、创建时间
+        return String.format(
+                "%s《%s》%s  种类: %s[%s]%s  创建时间： %s%s%s",
+                ConsoleColors.YELLOW, title, ConsoleColors.RESET,
+                ConsoleColors.PURPLE, type.getDesc(), ConsoleColors.RESET,
+                ConsoleColors.CYAN, createTime, ConsoleColors.RESET
+        );
     }
 
     public String getTitle() {
