@@ -12,11 +12,11 @@ jobs:
       contents: write # 赋予上传 Release 的权限
 
     steps:
-      # 1. 检出代码
+      # 检出代码
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. 设置 JDK 17
+      # 设置 JDK 17
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -24,7 +24,7 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
-      # 3. 授予 Gradle 执行权限
+      # 授予 Gradle 执行权限
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -33,7 +33,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew jar
 
-      # 5. 创建 GitHub Release 并上传 JAR
+      # 创建 GitHub Release 并上传 JAR
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
