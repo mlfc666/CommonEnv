@@ -43,7 +43,7 @@
 ```bash
 git clone https://github.com/mlfc666/CommonEnv.git
 ```
-(或者直接运行jar包)
+(或者直接从workflows自动构建中下载并运行jar包)
 ```bash
 java -jar CommonEnv-SNAPSHOT.jar
 ```
