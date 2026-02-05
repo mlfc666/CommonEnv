@@ -45,5 +45,5 @@
    ```
 (或者直接运行jar包)
 ```bash
-java -jar CommonEnv-[版本号].jar
+java -jar CommonEnv-SNAPSHOT.jar
 ```
