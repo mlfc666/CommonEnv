@@ -3,20 +3,22 @@ name: Build and Release
 on:
   push:
     tags:
-      - 'v*' # 当推送以 v 开头的 tag 时触发，例如 v1.0.1
+      - 'v*'
+
+env:
+  # 镜像名
+  IMAGE_NAME: common-env
 
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # 赋予上传 Release 的权限
+      contents: write
 
     steps:
-      # 检出代码
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 设置 JDK 17
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -24,22 +26,34 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
-      # 授予 Gradle 执行权限
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # 4. 执行打包
-      # 这里会执行 build.gradle 中定义的 jar 任务
       - name: Build with Gradle
         run: ./gradlew jar
 
-      # 创建 GitHub Release 并上传 JAR
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           files: build/libs/*.jar
           name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 登录 Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          # 像密码一样，从 Secrets 中读取用户名
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 构建并推送 Docker 镜像
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
