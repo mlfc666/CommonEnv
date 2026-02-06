@@ -1,8 +1,8 @@
-# 基础镜像
-FROM openjdk:17-slim
+# 建议使用基于 alpine 的版本，体积更小
+FROM eclipse-temurin:17-jre-alpine
 
-# 安装必要工具
-RUN apt-get update && apt-get install -y ttyd coreutils && rm -rf /var/lib/apt/lists/*
+# Alpine 使用 apk 安装工具，如果换成 focal 则继续用 apt
+RUN apk add --no-cache ttyd coreutils
 
 WORKDIR /app
 
