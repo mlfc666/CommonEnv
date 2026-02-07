@@ -1,4 +1,4 @@
-package week1.ui;
+package common.utils;
 
 public class ConsoleColors {
     // 基础样式

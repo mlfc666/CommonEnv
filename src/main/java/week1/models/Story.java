@@ -1,7 +1,7 @@
 package week1.models;
 
 import week1.enums.StoryType;
-import week1.ui.ConsoleColors;
+import common.utils.ConsoleColors;
 import week1.utils.DateUtil;
 
 import java.util.Objects;

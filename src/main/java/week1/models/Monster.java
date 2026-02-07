@@ -1,6 +1,6 @@
 package week1.models;
 
-import week1.ui.ConsoleColors;
+import common.utils.ConsoleColors;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,6 @@
 package week1.ui;
 
+import common.utils.ConsoleColors;
 import week1.enums.StoryType;
 import java.util.Scanner;
 

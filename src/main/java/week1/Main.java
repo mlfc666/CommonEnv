@@ -7,7 +7,7 @@ import week1.services.MonsterService;
 import week1.services.Statistics;
 import week1.services.impl.MonsterServiceImpl;
 import week1.services.impl.StatisticsImpl;
-import week1.ui.ConsoleColors;
+import common.utils.ConsoleColors;
 import week1.ui.ConsoleMenu;
 import week1.ui.IllegalMonsterException;
 

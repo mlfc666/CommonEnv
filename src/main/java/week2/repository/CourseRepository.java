@@ -8,7 +8,7 @@ import java.util.List;
 public interface CourseRepository {
     Course insert(Course course);
     void update(Course course);
-    int incrementAgeByClassName(String className);
+
     List<Course> findDistinctByCreditGreaterThanOrderByCreditDesc(double limit);
     List<ClassGenderCountDTO> countGenderByClass();
 }
