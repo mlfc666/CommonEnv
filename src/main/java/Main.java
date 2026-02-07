@@ -6,6 +6,8 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             System.out.println("--- 小A后台组寒假训练营总导航 ---");
+            System.out.println("当前Jar开源地址：https://github.com/mlfc666/CommonEnv");
+            System.out.println("容器平台：https://github.com/mlfc666/CommonDockerEnv");
             System.out.println("1. 进入 week1：小怪兽故事记录系统");
             System.out.println("2. 进入 week2：(待开发)");
             System.out.println("0. 退出程序");
