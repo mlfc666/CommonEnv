@@ -11,8 +11,9 @@ public class MonsterRepositoryImpl implements MonsterRepository {
     private final Map<String, Monster> storage = new HashMap<>();
 
     @Override
-    public void save(Monster monster) {
+    public Monster insert(Monster monster) {
         storage.put(monster.getName(), monster);
+        return monster;
     }
 
     @Override

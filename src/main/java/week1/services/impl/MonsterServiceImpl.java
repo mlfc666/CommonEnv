@@ -29,7 +29,7 @@ public class MonsterServiceImpl implements MonsterService {
             throw new IllegalMonsterException("怪兽名称 [" + monster.getName() + "] 已存在，请更换名称");
         }
 
-        repository.save(monster);
+        repository.insert(monster);
         return true;
     }
 
