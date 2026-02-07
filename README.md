@@ -4,6 +4,9 @@
 
 ---
 
+*   相关项目：https://github.com/mlfc666/CommonDockerEnv
+*   演示地址：https://java.mlfc.moe/
+
 ## 小A寒假学习项目进度索引
 
 点击下方链接可直接跳转至对应周次的详细文档与源码路径：
