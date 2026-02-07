@@ -42,7 +42,7 @@ public class ScoreRepositoryImpl implements ScoreRepository {
     }
 
     @Override
-    public int deleteByScoreLessThan(double limit, ScoreRemark remark) {
+    public int deleteByScoreLessThan(Double limit, ScoreRemark remark) {
         String sql = """
                 DELETE FROM scores WHERE score < ? AND remark = ?
                 """;
@@ -55,7 +55,7 @@ public class ScoreRepositoryImpl implements ScoreRepository {
     }
 
     @Override
-    public int deleteByCourseNameAndScoreLessThan(String courseName, double limit) {
+    public int deleteByCourseNameAndScoreLessThan(String courseName, Double limit) {
         String sql = """
                 DELETE FROM scores WHERE score < ?  AND course_id = (SELECT course_id FROM courses WHERE course_name = ?)
                 """;

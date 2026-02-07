@@ -10,9 +10,9 @@ public interface ScoreRepository {
 
     void update(Score score);
 
-    int deleteByScoreLessThan(double limit, ScoreRemark remark);
+    int deleteByScoreLessThan(Double limit, ScoreRemark remark);
 
-    int deleteByCourseNameAndScoreLessThan(String courseName, double limit);
+    int deleteByCourseNameAndScoreLessThan(String courseName, Double limit);
 
     int deleteByStudentPhoneStartingWith(String phonePrefix);
 

@@ -44,7 +44,7 @@ public class CourseRepositoryImpl implements CourseRepository {
     }
 
     @Override
-    public List<Course> findDistinctByCreditGreaterThanOrderByCreditDesc(double limit) {
+    public List<Course> findDistinctByCreditGreaterThanOrderByCreditDesc(Double limit) {
         String sql = """
                 SELECT DISTINCT course_name, teacher, credit FROM courses WHERE credit > ? ORDER BY credit DESC
                 """;

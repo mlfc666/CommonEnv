@@ -9,6 +9,6 @@ public interface CourseRepository {
     Course insert(Course course);
     void update(Course course);
 
-    List<Course> findDistinctByCreditGreaterThanOrderByCreditDesc(double limit);
+    List<Course> findDistinctByCreditGreaterThanOrderByCreditDesc(Double limit);
     List<ClassGenderCountDTO> countGenderByClass();
 }

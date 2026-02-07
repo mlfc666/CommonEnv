@@ -8,7 +8,7 @@ public class Score {
     private Integer scoreId;
     private Integer studentId;
     private Integer courseId;
-    private double score;
+    private Double score;
     private LocalDateTime examTime;
     private ScoreRemark remark;
 
