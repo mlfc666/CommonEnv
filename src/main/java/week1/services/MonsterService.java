@@ -6,7 +6,7 @@ import week1.models.StoryModel;
 import java.util.List;
 import java.util.Optional;
 
-public interface IMonsterService {
+public interface MonsterService {
     // 添加怪兽
     boolean addMonster(MonsterModel monster);
     // 获取列表

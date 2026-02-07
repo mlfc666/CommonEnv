@@ -1,16 +1,18 @@
-package week1.services;
+package week1.services.impl;
 
 import week1.models.MonsterModel;
 import week1.models.StoryModel;
 import week1.repository.MonsterRepository;
+import week1.repository.impl.MonsterRepositoryImpl;
+import week1.services.MonsterService;
 import week1.ui.IllegalMonsterException;
 
 import java.util.List;
 import java.util.Optional;
 
-public class MonsterServiceImpl implements IMonsterService {
+public class MonsterServiceImpl implements MonsterService {
     // 注入Repository
-    private final MonsterRepository repository = new MonsterRepository();
+    private final MonsterRepository repository = new MonsterRepositoryImpl();
 
     @Override
     public boolean addMonster(MonsterModel monster) {

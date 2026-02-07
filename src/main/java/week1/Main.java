@@ -3,10 +3,10 @@ package week1;
 import week1.enums.StoryEnum;
 import week1.models.MonsterModel;
 import week1.models.StoryModel;
-import week1.services.IMonsterService;
-import week1.services.IStatistics;
-import week1.services.MonsterServiceImpl;
-import week1.services.StatisticsImpl;
+import week1.services.MonsterService;
+import week1.services.Statistics;
+import week1.services.impl.MonsterServiceImpl;
+import week1.services.impl.StatisticsImpl;
 import week1.ui.ConsoleColors;
 import week1.ui.ConsoleMenu;
 import week1.ui.IllegalMonsterException;
@@ -14,8 +14,8 @@ import week1.ui.IllegalMonsterException;
 public class Main {
     // 实例化 UI 组件和 Service 组件
     private static final ConsoleMenu ui = new ConsoleMenu();
-    private static final IMonsterService service = new MonsterServiceImpl();
-    private static final IStatistics statistics = new StatisticsImpl();
+    private static final MonsterService service = new MonsterServiceImpl();
+    private static final Statistics statistics = new StatisticsImpl();
 
     public static void main(String[] args) {
         while (true) {

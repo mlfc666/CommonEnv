@@ -2,24 +2,15 @@ package week1.repository;
 
 import week1.models.MonsterModel;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
-public class MonsterRepository {
-    private final Map<String, MonsterModel> storage = new HashMap<>();
+public interface MonsterRepository {
+    void save(MonsterModel monster);
 
-    public void save(MonsterModel monster) {
-        storage.put(monster.getName(), monster);
-    }
+    Optional<MonsterModel> findByName(String name);
 
-    public Optional<MonsterModel> findByName(String name) {
-        return Optional.ofNullable(storage.get(name));
-    }
+    List<MonsterModel> findAll();
 
-    public List<MonsterModel> findAll() {
-        return new ArrayList<>(storage.values());
-    }
-
-    public boolean existsByName(String name) {
-        return storage.containsKey(name);
-    }
+    boolean existsByName(String name);
 }

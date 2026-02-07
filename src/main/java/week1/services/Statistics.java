@@ -6,6 +6,6 @@ import week1.models.StoryModel;
 import java.util.List;
 import java.util.Optional;
 
-public interface IStatistics {
+public interface Statistics {
     Optional<StoryModel> getMostPopular(List<MonsterModel> monsters);
 }
