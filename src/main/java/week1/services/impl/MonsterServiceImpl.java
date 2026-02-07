@@ -1,7 +1,7 @@
 package week1.services.impl;
 
-import week1.models.MonsterModel;
-import week1.models.StoryModel;
+import week1.models.Monster;
+import week1.models.Story;
 import week1.repository.MonsterRepository;
 import week1.repository.impl.MonsterRepositoryImpl;
 import week1.services.MonsterService;
@@ -15,7 +15,7 @@ public class MonsterServiceImpl implements MonsterService {
     private final MonsterRepository repository = new MonsterRepositoryImpl();
 
     @Override
-    public boolean addMonster(MonsterModel monster) {
+    public boolean addMonster(Monster monster) {
         if (monster == null) {
             throw new IllegalMonsterException("怪兽对象不能为空");
         }
@@ -34,19 +34,19 @@ public class MonsterServiceImpl implements MonsterService {
     }
 
     @Override
-    public boolean addStoryToMonster(String name, StoryModel story) {
+    public boolean addStoryToMonster(String name, Story story) {
         return repository.findByName(name)
                 .map(monster -> monster.addStory(story))
                 .orElse(false);
     }
 
     @Override
-    public List<MonsterModel> getAllMonsters() {
+    public List<Monster> getAllMonsters() {
         return repository.findAll();
     }
 
     @Override
-    public Optional<MonsterModel> findByName(String name) {
+    public Optional<Monster> findByName(String name) {
         return repository.findByName(name);
     }
 }

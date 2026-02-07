@@ -1,18 +1,18 @@
 package week1.services;
 
-import week1.models.MonsterModel;
-import week1.models.StoryModel;
+import week1.models.Monster;
+import week1.models.Story;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface MonsterService {
     // 添加怪兽
-    boolean addMonster(MonsterModel monster);
+    boolean addMonster(Monster monster);
     // 获取列表
-    List<MonsterModel> getAllMonsters();
+    List<Monster> getAllMonsters();
     // 按怪兽名查找
-    Optional<MonsterModel> findByName(String name);
+    Optional<Monster> findByName(String name);
     // 给怪兽添加故事
-    boolean addStoryToMonster(String name, StoryModel story);
+    boolean addStoryToMonster(String name, Story story);
 }

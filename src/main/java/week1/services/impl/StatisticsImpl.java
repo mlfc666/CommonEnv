@@ -1,7 +1,7 @@
 package week1.services.impl;
 
-import week1.models.MonsterModel;
-import week1.models.StoryModel;
+import week1.models.Monster;
+import week1.models.Story;
 import week1.services.Statistics;
 
 import java.util.*;
@@ -10,9 +10,9 @@ import java.util.stream.Collectors;
 
 public class StatisticsImpl implements Statistics {
     @Override
-    public Optional<StoryModel> getMostPopular(List<MonsterModel> monsters) {
+    public Optional<Story> getMostPopular(List<Monster> monsters) {
         // 定义一个临时的数据结构
-        record StoryFreq(StoryModel story, long count) {}
+        record StoryFreq(Story story, long count) {}
 
         return monsters.stream()
                 .flatMap(m -> m.getStoryList().stream())

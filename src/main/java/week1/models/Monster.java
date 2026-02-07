@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class MonsterModel {
+public class Monster {
     // 名称
     private String name;
     // 年龄
@@ -14,10 +14,10 @@ public class MonsterModel {
     // 介绍
     private String desc;
     // 故事列表
-    private List<StoryModel> storyList = new ArrayList<>();
+    private List<Story> storyList = new ArrayList<>();
 
     // 有的怪物生来就是传奇，自带故事
-    public MonsterModel(String name, int age, String desc, List<StoryModel> storyList) {
+    public Monster(String name, int age, String desc, List<Story> storyList) {
         this.name = name;
         this.age = age;
         this.desc = desc;
@@ -25,14 +25,14 @@ public class MonsterModel {
     }
 
     // 重载一个不需要故事的构造方法
-    public MonsterModel(String name, int age, String desc) {
+    public Monster(String name, int age, String desc) {
         this.name = name;
         this.age = age;
         this.desc = desc;
     }
 
     // 为小怪兽添加故事
-    public boolean addStory(StoryModel story) {
+    public boolean addStory(Story story) {
         if (story == null) {
             return false;
         }
@@ -48,7 +48,7 @@ public class MonsterModel {
     }
 
     // 显示小怪兽的故事
-    public List<StoryModel> getStoryList() {
+    public List<Story> getStoryList() {
         return storyList;
     }
 
@@ -106,7 +106,7 @@ public class MonsterModel {
 
     @Override
     public boolean equals(Object o) {
-        return (this == o) || (o instanceof MonsterModel that && Objects.equals(name, that.name));
+        return (this == o) || (o instanceof Monster that && Objects.equals(name, that.name));
     }
 
     @Override

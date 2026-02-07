@@ -1,8 +1,8 @@
 package week1;
 
-import week1.enums.StoryEnum;
-import week1.models.MonsterModel;
-import week1.models.StoryModel;
+import week1.enums.StoryType;
+import week1.models.Monster;
+import week1.models.Story;
 import week1.services.MonsterService;
 import week1.services.Statistics;
 import week1.services.impl.MonsterServiceImpl;
@@ -43,7 +43,7 @@ public class Main {
             String name = ui.askForString("姓名");
             int age = ui.askForAge();
             String desc = ui.askForString("介绍");
-            MonsterModel monster = new MonsterModel(name, age, desc);
+            Monster monster = new Monster(name, age, desc);
             service.addMonster(monster);
             ui.showMessage("成功：已添加小怪兽。", ConsoleColors.GREEN);
         } catch (IllegalMonsterException e) {
@@ -68,9 +68,9 @@ public class Main {
         String name = ui.askForString("请输入要添加故事的怪兽姓名");
         String title = ui.askForString("故事标题");
         String content = ui.askForString("故事内容");
-        StoryEnum type = ui.askForStoryType();
+        StoryType type = ui.askForStoryType();
 
-        StoryModel story = new StoryModel(title, content, type);
+        Story story = new Story(title, content, type);
         if (service.addStoryToMonster(name, story)) {
             ui.showMessage("成功：故事已记录。", ConsoleColors.GREEN);
         } else {
@@ -95,7 +95,7 @@ public class Main {
         System.out.println("当前怪兽总数: " + monsters.size());
 
         statistics.getMostPopular(monsters).ifPresentOrElse(
-                s -> ui.showMessage("最受欢迎故事: " + s.getTitle() + " (" + s.getType().getDesc() + ")", ConsoleColors.YELLOW),
+                s -> ui.showMessage("最受欢迎故事: " + s.getTitle() + " (" + s.getType().getType() + ")", ConsoleColors.YELLOW),
                 () -> System.out.println("暂无流行故事统计数据。")
         );
     }

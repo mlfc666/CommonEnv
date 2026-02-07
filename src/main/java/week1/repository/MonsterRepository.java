@@ -1,16 +1,16 @@
 package week1.repository;
 
-import week1.models.MonsterModel;
+import week1.models.Monster;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface MonsterRepository {
-    void save(MonsterModel monster);
+    void save(Monster monster);
 
-    Optional<MonsterModel> findByName(String name);
+    Optional<Monster> findByName(String name);
 
-    List<MonsterModel> findAll();
+    List<Monster> findAll();
 
     boolean existsByName(String name);
 }

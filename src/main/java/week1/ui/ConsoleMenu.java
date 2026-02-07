@@ -1,6 +1,6 @@
 package week1.ui;
 
-import week1.enums.StoryEnum;
+import week1.enums.StoryType;
 import java.util.Scanner;
 
 public class ConsoleMenu {
@@ -37,13 +37,13 @@ public class ConsoleMenu {
         return scanner.nextLine();
     }
 
-    public StoryEnum askForStoryType() {
+    public StoryType askForStoryType() {
         System.out.println("选择故事类型: 1. 搞笑 | 2. 冒险 | 3. 学习 (默认)");
         String choice = scanner.nextLine();
         return switch (choice) {
-            case "1" -> StoryEnum.FUNNY;
-            case "2" -> StoryEnum.ADVENTURE;
-            default -> StoryEnum.LEARNING;
+            case "1" -> StoryType.FUNNY;
+            case "2" -> StoryType.ADVENTURE;
+            default -> StoryType.LEARNING;
         };
     }
 }
