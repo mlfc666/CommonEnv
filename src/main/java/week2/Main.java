@@ -47,6 +47,7 @@ public class Main {
                 case "S5" -> handleAddSingleScore();
                 case "S6" -> handleShowRawTables();
                 case "S7" -> handleExecuteCustomSQL();
+                case "S8" -> handleClearAllData();
                 case "1" -> handleUpdateModule();
                 case "2" -> handleDeleteModule();
                 case "3" -> handleBaseQueryModule();
@@ -159,6 +160,26 @@ public class Main {
             ui.showMessage("执行成功，受影响行数: " + rows, ConsoleColors.GREEN);
         } catch (Exception e) {
             ui.showMessage("SQL 语法错误: " + e.getMessage(), ConsoleColors.RED);
+        }
+    }
+
+    private static void handleClearAllData() {
+        ui.printHeader("S8. 清空全部数据");
+        boolean confirm = ui.askForString("确定要清空所有数据库表吗？(y/n)").equalsIgnoreCase("y");
+
+        if (!confirm) {
+            ui.showMessage("操作已取消。", ConsoleColors.YELLOW);
+            return;
+        }
+
+        try {
+            DBExecutor.executeSql("TRUNCATE TABLE scores");
+            DBExecutor.executeSql("TRUNCATE TABLE courses");
+            DBExecutor.executeSql("TRUNCATE TABLE students");
+
+            ui.showMessage("所有数据已清空，表结构已重置。", ConsoleColors.GREEN);
+        } catch (Exception e) {
+            ui.showMessage("清空失败: " + e.getMessage(), ConsoleColors.RED);
         }
     }
 
