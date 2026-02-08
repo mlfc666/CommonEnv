@@ -173,9 +173,14 @@ public class Main {
         }
 
         try {
+
+            DBExecutor.executeSql("SET FOREIGN_KEY_CHECKS = 0");
+
             DBExecutor.executeSql("TRUNCATE TABLE scores");
             DBExecutor.executeSql("TRUNCATE TABLE courses");
             DBExecutor.executeSql("TRUNCATE TABLE students");
+
+            DBExecutor.executeSql("SET FOREIGN_KEY_CHECKS = 1");
 
             ui.showMessage("所有数据已清空，表结构已重置。", ConsoleColors.GREEN);
         } catch (Exception e) {
