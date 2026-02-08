@@ -19,6 +19,16 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public void addCourse(String courseName, String teacherName, Double credit) {
+        addCourse(new Course(courseName, teacherName, credit));
+    }
+
+    @Override
+    public List<Course> findAll() {
+        return courseRepository.findAll();
+    }
+
+    @Override
     public boolean updateCourseByCourseName(String courseName, String teacherName, Double credit) {
         return courseRepository.updateByCourseName(courseName, teacherName, credit) > 0;
     }

@@ -9,6 +9,8 @@ import java.util.List;
 public interface ScoreRepository {
     Score insert(Score score);
 
+    List<Score> findAll();
+
     int updateScoreByStudentNameAndCourseName(String studentName, String courseName, Double score, ScoreRemark remark);
 
     int deleteByScoreLessThan(Double limit, ScoreRemark remark);
@@ -16,10 +18,6 @@ public interface ScoreRepository {
     int deleteByCourseNameAndScoreLessThan(String courseName, Double limit);
 
     int deleteByStudentPhoneStartingWith(String phonePrefix);
-
-    List<Score> findByTeacherNameOrderByScoreDesc(String teacherName);
-
-    List<Score> findByStudentNameContainingOrStudentNameContaining(String name1, String name2);
 
     List<ScoreDetailDTO> findScoreDetailsByTeacher(String teacherName);
 

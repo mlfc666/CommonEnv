@@ -8,6 +8,10 @@ import java.util.List;
 public interface StudentService {
     void addStudent(Student student);
 
+    List<Student> findAll();
+
+    void addStudent(String studentName, Gender gender, String className, int age, String phone);
+
     int addAllStudentsAge(String className);
 
     List<Student> findFemaleStudentsOrderByClassAscAgeDesc();

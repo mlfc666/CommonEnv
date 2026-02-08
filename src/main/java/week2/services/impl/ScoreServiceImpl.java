@@ -7,6 +7,7 @@ import week2.models.Score;
 import week2.repository.ScoreRepository;
 import week2.services.ScoreService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ScoreServiceImpl implements ScoreService {
@@ -18,11 +19,20 @@ public class ScoreServiceImpl implements ScoreService {
 
     @Override
     public void addScore(Score score) {
-
         if (score.getScore() > 100 || score.getScore() < 0) {
             throw new IllegalScoreException("成绩必须在 0 到 100 之间");
         }
         scoreRepository.insert(score);
+    }
+
+    @Override
+    public void addScore(Integer studentId, Integer courseId, Double score, LocalDateTime examTime, ScoreRemark remark) {
+        addScore(new Score(studentId, courseId, score, examTime, remark));
+    }
+
+    @Override
+    public List<Score> findAll() {
+        return scoreRepository.findAll();
     }
 
     @Override

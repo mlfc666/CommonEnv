@@ -23,15 +23,6 @@ public class Score {
         this.remark = remark;
     }
 
-    public Score(Integer scoreId, Integer studentId, Integer courseId, double score, LocalDateTime examTime, ScoreRemark remark) {
-        this.scoreId = scoreId;
-        this.studentId = studentId;
-        this.courseId = courseId;
-        this.score = score;
-        this.examTime = examTime;
-        this.remark = remark;
-    }
-
     public Integer getScoreId() {
         return scoreId;
     }

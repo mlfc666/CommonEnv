@@ -6,9 +6,6 @@ import week2.models.Score;
 import week2.repository.ScoreRepository;
 import week2.utils.DBExecutor;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 
 public class ScoreRepositoryImpl implements ScoreRepository {
@@ -29,6 +26,27 @@ public class ScoreRepositoryImpl implements ScoreRepository {
                 score.getRemark().getRemark()
         );
         return score;
+    }
+
+    @Override
+    public List<Score> findAll() {
+        String sql = """
+                SELECT score_id, student_id, course_id, score, exam_time, remark FROM scores
+                """;
+        return DBExecutor.executeQuery(
+                "查询所有原始成绩:",
+                sql,
+                rs -> {
+                    Score s = new Score();
+                    s.setScoreId(rs.getInt("score_id"));
+                    s.setStudentId(rs.getInt("student_id"));
+                    s.setCourseId(rs.getInt("course_id"));
+                    s.setScore(rs.getDouble("score"));
+                    s.setExamTime(rs.getTimestamp("exam_time").toLocalDateTime());
+                    s.setRemark(ScoreRemark.valueOf(rs.getString("remark")));
+                    return s;
+                }
+        );
     }
 
     @Override
@@ -82,55 +100,6 @@ public class ScoreRepositoryImpl implements ScoreRepository {
         );
     }
 
-    @Override
-    public List<Score> findByTeacherNameOrderByScoreDesc(String teacherName) {
-        String sql = """
-                SELECT s.* FROM scores s JOIN courses c ON s.course_id = c.course_id WHERE c.teacher = ? ORDER BY s.score DESC
-                """;
-
-        return DBExecutor.executeQuery(
-                "查询" + teacherName + "老师所教课程的成绩",
-                sql,
-                this::mapRowToScore,
-                teacherName
-        );
-    }
-
-    @Override
-    public List<Score> findByStudentNameContainingOrStudentNameContaining(String name1, String name2) {
-        String sql = """
-                SELECT sc.* FROM scores sc JOIN students st ON sc.student_id = st.student_id  WHERE st.student_name LIKE ? OR st.student_name LIKE ?
-                """;
-
-        return DBExecutor.executeQuery(
-                "搜索名字包含的成绩记录: " + name1 + ", " + name2,
-                sql,
-                this::mapRowToScore,
-                "%" + name1 + "%",
-                "%" + name2 + "%"
-        );
-    }
-
-    private Score mapRowToScore(ResultSet rs) throws SQLException {
-        Score s = new Score();
-        s.setScoreId(rs.getInt("score_id"));
-        s.setStudentId(rs.getInt("student_id"));
-        s.setCourseId(rs.getInt("course_id"));
-        s.setScore(rs.getDouble("score"));
-
-        Timestamp ts = rs.getTimestamp("exam_time");
-        if (ts != null) s.setExamTime(ts.toLocalDateTime());
-
-        String remarkStr = rs.getString("remark");
-        if (remarkStr != null) {
-            try {
-                s.setRemark(ScoreRemark.valueOf(remarkStr));
-            } catch (IllegalArgumentException e) {
-                s.setRemark(null);
-            }
-        }
-        return s;
-    }
 
     @Override
     public List<ScoreDetailDTO> findScoreDetailsByTeacher(String teacherName) {

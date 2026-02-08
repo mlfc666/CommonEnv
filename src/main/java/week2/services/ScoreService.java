@@ -4,10 +4,15 @@ import week2.dto.ScoreDetailDTO;
 import week2.enums.ScoreRemark;
 import week2.models.Score;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ScoreService {
     void addScore(Score score);
+
+    void addScore(Integer studentId, Integer courseId, Double score, LocalDateTime examTime, ScoreRemark remark);
+
+    List<Score> findAll();
 
     boolean updateScoreByStudentNameAndCourseName(String studentName, String courseName, Double score, ScoreRemark remark);
 

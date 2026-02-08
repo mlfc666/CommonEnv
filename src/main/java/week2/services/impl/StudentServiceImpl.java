@@ -20,6 +20,16 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public List<Student> findAll() {
+        return studentRepository.findAll();
+    }
+
+    @Override
+    public void addStudent(String studentName, Gender gender, String className, int age, String phone) {
+        addStudent(new Student(studentName, gender, age, className, phone));
+    }
+
+    @Override
     public int addAllStudentsAge(String className) {
         return studentRepository.incrementAgeByClassName(className);
     }

@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface CourseService {
     void addCourse(Course course);
+    void addCourse(String courseName, String teacherName, Double credit);
+    List<Course> findAll();
 
     boolean updateCourseByCourseName(String CourseName, String teacherName, Double credit);
 

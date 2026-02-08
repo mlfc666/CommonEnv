@@ -9,7 +9,6 @@ import week2.utils.DBExecutor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 public class StudentRepositoryImpl implements StudentRepository {
 
@@ -31,40 +30,23 @@ public class StudentRepositoryImpl implements StudentRepository {
     }
 
     @Override
-    public Optional<Student> findByStudentId(Integer studentId) {
+    public List<Student> findAll() {
         String sql = """
-                SELECT * FROM students WHERE student_id = ?
+                SELECT student_id, student_name, gender, age, class, phone FROM students
                 """;
-        List<Student> students = DBExecutor.executeQuery(
-                "查询ID为" + studentId + "的学生",
+        return DBExecutor.executeQuery(
+                "查询所有学生:",
                 sql,
-                (rs) -> new Student(
-                        rs.getInt("student_id"),
-                        rs.getString("student_name"),
-                        Gender.valueOf(rs.getString("gender")),
-                        rs.getInt("age"),
-                        rs.getString("class"),
-                        rs.getString("phone")
-                ),
-                studentId
-        );
-        return students.stream().findFirst();
-    }
-
-    @Override
-    public void update(Student student) {
-        String sql = """
-                UPDATE students SET student_name = ?, gender = ?, age = ?, class = ?, phone = ? WHERE student_id = ?
-                """;
-        DBExecutor.executeUpdate(
-                "更新学生信息-ID:" + student.getStudentId(),
-                sql,
-                student.getStudentName(),
-                student.getGender().name(),
-                student.getAge(),
-                student.getClassName(),
-                student.getPhone(),
-                student.getStudentId()
+                rs -> {
+                    Student student = new Student();
+                    student.setStudentId(rs.getInt("student_id"));
+                    student.setStudentName(rs.getString("student_name"));
+                    student.setGender(Gender.valueOf(rs.getString("gender")));
+                    student.setAge(rs.getInt("age"));
+                    student.setClassName(rs.getString("class"));
+                    student.setPhone(rs.getString("phone"));
+                    return student;
+                }
         );
     }
 

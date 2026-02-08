@@ -5,7 +5,6 @@ import week2.repository.CourseRepository;
 import week2.utils.DBExecutor;
 
 import java.util.List;
-import java.util.Optional;
 
 public class CourseRepositoryImpl implements CourseRepository {
 
@@ -28,21 +27,22 @@ public class CourseRepositoryImpl implements CourseRepository {
     }
 
     @Override
-    public Optional<Course> findByCourseId(Integer courseId) {
-        String sql = "SELECT course_id, course_name, teacher, credit FROM courses WHERE course_id = ?";
-
-        List<Course> list = DBExecutor.executeQuery(
-                "查询ID为" + courseId + "的课程",
+    public List<Course> findAll() {
+        String sql = """
+                SELECT course_id, course_name, teacher, credit FROM courses
+                """;
+        return DBExecutor.executeQuery(
+                "查询所有课程:",
                 sql,
-                (rs) -> new Course(
-                        rs.getInt("course_id"),
-                        rs.getString("course_name"),
-                        rs.getString("teacher"),
-                        rs.getDouble("credit")
-                ),
-                courseId
+                rs -> {
+                    Course course = new Course();
+                    course.setCourseId(rs.getInt("course_id"));
+                    course.setCourseName(rs.getString("course_name"));
+                    course.setTeacher(rs.getString("teacher"));
+                    course.setCredit(rs.getDouble("credit"));
+                    return course;
+                }
         );
-        return list.stream().findFirst();
     }
 
     @Override

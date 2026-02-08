@@ -2,22 +2,18 @@ package week2.utils;
 
 import common.utils.ConsoleColors;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DBExecutor {
-    /**
-     * 执行 SQL 更新操作（增、删、改、建表）
-     *
-     * @param description 业务步骤描述
-     * @param sql         带有 ? 占位符的 SQL 语句
-     * @param params      对应的参数列表
-     */
-    @SuppressWarnings("SqlInjection")
+    public static int executeSql(String sql) throws SQLException {
+        try (Connection conn = JdbcUtils.getConnection();
+             Statement stmt = conn.createStatement()) {
+            return stmt.executeUpdate(sql);
+        }
+    }
+
     public static int executeUpdate(String description, String sql, Object... params) {
         System.out.println(ConsoleColors.CYAN + "[描述]:" + ConsoleColors.RESET + ConsoleColors.BOLD + description + ConsoleColors.RESET);
         System.out.println(ConsoleColors.BLUE + "[SQL]:" + ConsoleColors.RESET + sql);
@@ -75,7 +71,6 @@ public class DBExecutor {
         return results;
     }
 
-    // 简单的内部接口，用于处理结果集转换
     @FunctionalInterface
     public interface RowMapper<T> {
         T map(ResultSet rs) throws SQLException;
