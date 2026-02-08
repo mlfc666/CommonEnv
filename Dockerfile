@@ -1,12 +1,12 @@
 FROM eclipse-temurin:17-jre
 
-
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tmux \
-    libaio1 \
+    libaio1t64 \
     libnuma1 \
     curl \
     ca-certificates \
+    && ln -s /usr/lib/x86_64-linux-gnu/libaio.so.1t64 /usr/lib/x86_64-linux-gnu/libaio.so.1 \
     && curl -LO https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64 \
     && chmod +x ttyd.x86_64 \
     && mv ttyd.x86_64 /usr/local/bin/ttyd \
@@ -15,7 +15,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-
 COPY build/libs/CommonEnv-SNAPSHOT.jar app.jar
 
 EXPOSE 7681
