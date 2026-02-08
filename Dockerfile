@@ -1,7 +1,7 @@
-# 切换为 Debian 12
-FROM eclipse-temurin:17-jre-bookworm
+FROM debian:bookworm-slim
 
 RUN apt-get update && apt-get install -y \
+    openjdk-17-jre-headless \
     ttyd \
     tmux \
     libaio1 \
@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+
 COPY build/libs/CommonEnv-SNAPSHOT.jar app.jar
 
 EXPOSE 7681
