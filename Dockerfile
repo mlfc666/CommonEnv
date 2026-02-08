@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libnuma1 \
     curl \
     ca-certificates \
-    && curl -LO https://github.com/tsl0922/ttyd/releases/download/1.7.3/ttyd.x86_64 \
+    && curl -LO https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64 \
     && chmod +x ttyd.x86_64 \
     && mv ttyd.x86_64 /usr/local/bin/ttyd \
     && apt-get purge -y curl ca-certificates \
