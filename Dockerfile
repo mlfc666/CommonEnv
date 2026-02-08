@@ -1,6 +1,6 @@
-FROM eclipse-temurin:17-jre-focal
+# 切换为 Debian 12
+FROM eclipse-temurin:17-jre-bookworm
 
-# 必须安装的数据库底层依赖
 RUN apt-get update && apt-get install -y \
     ttyd \
     tmux \
