@@ -1,22 +1,27 @@
-# 使用 Ubuntu 22.04 基础镜像
-FROM eclipse-temurin:17-jre-jammy
+# 使用最精简的 Debian 镜像
+FROM debian:bookworm-slim
 
-RUN apt-get update && apt-get install -y \
-    software-properties-common \
-    && add-apt-repository universe \
-    && apt-get update && apt-get install -y \
-    ttyd \
+# 仅安装运行 Java 和 MariaDB 所需的最核心库
+# 使用 --no-install-recommends 避免安装推荐的额外垃圾文件
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    openjdk-17-jre-headless \
     tmux \
     libaio1 \
     libnuma1 \
+    curl \
+    ca-certificates \
+    && curl -LO https://github.com/tsl0922/ttyd/releases/download/1.7.3/ttyd.x86_64 \
+    && chmod +x ttyd.x86_64 \
+    && mv ttyd.x86_64 /usr/local/bin/ttyd \
+    && apt-get purge -y curl ca-certificates \
+    && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-
-# 复制你的 Jar 包
 COPY build/libs/CommonEnv-SNAPSHOT.jar app.jar
 
 EXPOSE 7681
 ENV BASE_PATH="/"
 
-ENTRYPOINT ["sh", "-c", "ttyd -p 7681 -a -base-path ${BASE_PATH} tmux new-session -A -s common_env 'java -Xmx192m -Xms128m -XX:+UseSerialGC -jar /app/app.jar'"]
+# 启动命令中注入 TERM 环境以修复样式
+ENTRYPOINT ["sh", "-c", "ttyd -p 7681 -a -base-path ${BASE_PATH} tmux -2 new-session -A -s common_env 'export TERM=xterm-256color; java -Xmx192m -Xms128m -XX:+UseSerialGC -jar /app/app.jar'"]
