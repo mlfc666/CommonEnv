@@ -15,7 +15,11 @@ import week2.ui.ConsoleMenu;
 import week2.ui.TablePrinter;
 import week2.utils.DBExecutor;
 import week2.utils.DBInitializer;
+import week2.utils.JdbcUtils;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -165,23 +169,22 @@ public class Main {
 
     private static void handleClearAllData() {
         ui.printHeader("S8. 彻底重置数据库");
-        ui.showMessage("警告：这将删除整个数据库并重建表结构！", ConsoleColors.RED);
-        boolean confirm = ui.askForString("确定执行吗？(y/n)").equalsIgnoreCase("y");
+        if (!ui.askForString("确定删除并重建 week2 数据库吗？(y/n)").equalsIgnoreCase("y")) return;
 
-        if (!confirm) {
-            ui.showMessage("操作已取消。", ConsoleColors.YELLOW);
-            return;
-        }
+        try (Connection conn = JdbcUtils.getBaseConnection();
+             Statement stmt = conn.createStatement()) {
 
-        try {
-            DBExecutor.executeSql("DROP DATABASE IF EXISTS week2");
-            DBExecutor.executeSql("CREATE DATABASE week2");
-            DBExecutor.executeSql("USE week2");
+            ui.showMessage("正在销毁旧数据库...", ConsoleColors.YELLOW);
+            stmt.executeUpdate("DROP DATABASE IF EXISTS week2");
+
+            ui.showMessage("正在创建新数据库...", ConsoleColors.GREEN);
+            stmt.executeUpdate("CREATE DATABASE week2 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+
             DBInitializer.initializer(ui);
 
-            ui.showMessage("数据库已彻底重置，表结构已重建。", ConsoleColors.GREEN);
-        } catch (Exception e) {
-            ui.showMessage("重置失败: " + e.getMessage(), ConsoleColors.RED);
+            ui.showMessage("数据库重建成功！", ConsoleColors.GREEN);
+        } catch (SQLException e) {
+            ui.showMessage("操作失败: " + e.getMessage(), ConsoleColors.RED);
         }
     }
 
