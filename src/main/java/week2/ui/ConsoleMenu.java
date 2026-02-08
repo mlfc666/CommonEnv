@@ -21,7 +21,7 @@ public class ConsoleMenu {
         System.out.println("\n" + ConsoleColors.CYAN + "------- 选单管理系统 -------");
         System.out.println("S1. 初始化 MySQL 服务 | S2. 插入初始数据");
         System.out.println("S3. 录入学生   | S4. 录入课程   | S5. 录入成绩");
-        System.out.println("S6. 查看原始表 | S7. 自定义 SQL | S8. 清空全部数据");
+        System.out.println("S6. 查看原始表 | S7. 自定义 SQL | S8. 彻底重置数据库");
         System.out.println("---------------------------");
         System.out.println("1. 更新数据 (年龄/学分/成绩)");
         System.out.println("2. 删除数据 (成绩清理/手机号关联)");

@@ -164,8 +164,9 @@ public class Main {
     }
 
     private static void handleClearAllData() {
-        ui.printHeader("S8. 清空全部数据");
-        boolean confirm = ui.askForString("确定要清空所有数据库表吗？(y/n)").equalsIgnoreCase("y");
+        ui.printHeader("S8. 彻底重置数据库");
+        ui.showMessage("警告：这将删除整个数据库并重建表结构！", ConsoleColors.RED);
+        boolean confirm = ui.askForString("确定执行吗？(y/n)").equalsIgnoreCase("y");
 
         if (!confirm) {
             ui.showMessage("操作已取消。", ConsoleColors.YELLOW);
@@ -173,18 +174,14 @@ public class Main {
         }
 
         try {
+            DBExecutor.executeSql("DROP DATABASE IF EXISTS week2");
+            DBExecutor.executeSql("CREATE DATABASE week2");
+            DBExecutor.executeSql("USE week2");
+            DBInitializer.initializer(ui);
 
-            DBExecutor.executeSql("SET FOREIGN_KEY_CHECKS = 0");
-
-            DBExecutor.executeSql("TRUNCATE TABLE scores");
-            DBExecutor.executeSql("TRUNCATE TABLE courses");
-            DBExecutor.executeSql("TRUNCATE TABLE students");
-
-            DBExecutor.executeSql("SET FOREIGN_KEY_CHECKS = 1");
-
-            ui.showMessage("所有数据已清空，表结构已重置。", ConsoleColors.GREEN);
+            ui.showMessage("数据库已彻底重置，表结构已重建。", ConsoleColors.GREEN);
         } catch (Exception e) {
-            ui.showMessage("清空失败: " + e.getMessage(), ConsoleColors.RED);
+            ui.showMessage("重置失败: " + e.getMessage(), ConsoleColors.RED);
         }
     }
 
@@ -242,6 +239,9 @@ public class Main {
     }
 
     private static void stopDatabase() {
-        try { if (embeddedDB != null) embeddedDB.stop(); } catch (Exception ignored) {}
+        try {
+            if (embeddedDB != null) embeddedDB.stop();
+        } catch (Exception ignored) {
+        }
     }
 }
