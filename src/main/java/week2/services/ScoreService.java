@@ -17,7 +17,7 @@ public interface ScoreService {
 
     boolean deleteScoreByStudentPhoneStartingWith(String phonePrefix);
 
-    List<ScoreDetailDTO> findScoresByTeacherName(String teacherName);
+    List<ScoreDetailDTO> findScoresByTeacherNameOrderByScoreDesc(String teacherName);
 
-    List<ScoreDetailDTO> findScoresByStudentNameKeywords(List<String> keywords);
+    List<ScoreDetailDTO> findScoresByStudentNameKeywords(String keyword1, String keyword2);
 }

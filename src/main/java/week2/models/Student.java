@@ -25,6 +25,16 @@ public class Student {
         this.createTime = LocalDateTime.now();
     }
 
+    public Student(Integer studentId, String studentName, Gender gender, int age, String className, String phone) {
+        this.studentId = studentId;
+        this.studentName = studentName;
+        this.gender = gender;
+        this.age = age;
+        this.className = className;
+        this.phone = phone;
+        this.createTime = LocalDateTime.now();
+    }
+
     public Integer getStudentId() {
         return studentId;
     }

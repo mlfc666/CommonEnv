@@ -15,6 +15,13 @@ public class Course {
         this.credit = credit;
     }
 
+    public Course(int courseId, String courseName, String teacher, Double credit) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.teacher = teacher;
+        this.credit = credit;
+    }
+
     public Integer getCourseId() {
         return courseId;
     }

@@ -1,11 +1,11 @@
 package week2.repository.impl;
 
-import week2.dto.ClassGenderCountDTO;
 import week2.models.Course;
 import week2.repository.CourseRepository;
 import week2.utils.DBExecutor;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CourseRepositoryImpl implements CourseRepository {
 
@@ -28,18 +28,32 @@ public class CourseRepositoryImpl implements CourseRepository {
     }
 
     @Override
-    public void update(Course course) {
-        String sql = """
-                UPDATE courses SET course_name = ?, teacher = ?, credit = ? WHERE course_id = ?
-                """;
+    public Optional<Course> findByCourseId(Integer courseId) {
+        String sql = "SELECT course_id, course_name, teacher, credit FROM courses WHERE course_id = ?";
 
-        DBExecutor.executeUpdate(
-                "修改课程-ID:" + course.getCourseId(),
+        List<Course> list = DBExecutor.executeQuery(
+                "查询ID为" + courseId + "的课程",
                 sql,
-                course.getCourseName(),
-                course.getTeacher(),
-                course.getCredit(),
-                course.getCourseId()
+                (rs) -> new Course(
+                        rs.getInt("course_id"),
+                        rs.getString("course_name"),
+                        rs.getString("teacher"),
+                        rs.getDouble("credit")
+                ),
+                courseId
+        );
+        return list.stream().findFirst();
+    }
+
+    @Override
+    public int updateByCourseName(String courseName, String teacherName, Double credit) {
+        String sql = "UPDATE courses SET teacher = ?, credit = ? WHERE course_name = ?";
+        return DBExecutor.executeUpdate(
+                "根据课程名修改:" + courseName,
+                sql,
+                teacherName,
+                credit,
+                courseName
         );
     }
 
@@ -59,31 +73,6 @@ public class CourseRepositoryImpl implements CourseRepository {
                     return course;
                 },
                 limit
-        );
-    }
-
-    @Override
-    public List<ClassGenderCountDTO> countGenderByClass() {
-        // 使用 CASE WHEN 进行行转列统计
-        String sql = """
-                SELECT class,
-                SUM(CASE WHEN gender = '男' THEN 1 ELSE 0 END) AS male_count,
-                SUM(CASE WHEN gender = '女' THEN 1 ELSE 0 END) AS female_count
-                FROM students
-                GROUP BY class
-                """;
-
-        return DBExecutor.executeQuery(
-                "按班级统计男女比例",
-                sql,
-                rs -> {
-                    ClassGenderCountDTO dto = new ClassGenderCountDTO();
-                    // 注意：数据库字段是 class
-                    dto.setClassName(rs.getString("class"));
-                    dto.setMaleCount(rs.getInt("male_count"));
-                    dto.setFemaleCount(rs.getInt("female_count"));
-                    return dto;
-                }
         );
     }
 }

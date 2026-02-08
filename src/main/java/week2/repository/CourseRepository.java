@@ -4,11 +4,15 @@ import week2.dto.ClassGenderCountDTO;
 import week2.models.Course;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CourseRepository {
     Course insert(Course course);
-    void update(Course course);
+
+    Optional<Course> findByCourseId(Integer courseId);
+
+    int updateByCourseName(String courseName, String teacherName, Double credit);
 
     List<Course> findDistinctByCreditGreaterThanOrderByCreditDesc(Double limit);
-    List<ClassGenderCountDTO> countGenderByClass();
+
 }
