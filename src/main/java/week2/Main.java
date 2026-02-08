@@ -1,6 +1,7 @@
 package week2;
 
 import ch.vorburger.mariadb4j.DB;
+import ch.vorburger.mariadb4j.DBConfigurationBuilder;
 import common.utils.ConsoleColors;
 import week2.enums.Gender;
 import week2.enums.ScoreRemark;
@@ -14,7 +15,6 @@ import week2.ui.ConsoleMenu;
 import week2.ui.TablePrinter;
 import week2.utils.DBExecutor;
 import week2.utils.DBInitializer;
-import week2.utils.JdbcUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -65,7 +65,10 @@ public class Main {
     private static void handleInitService() {
         try {
             if (embeddedDB == null) {
-                embeddedDB = DB.newEmbeddedDB(3306);
+                DBConfigurationBuilder configBuilder = DBConfigurationBuilder.newBuilder();
+                configBuilder.setPort(3306);
+                configBuilder.addArg("--user=root");
+                embeddedDB = DB.newEmbeddedDB(configBuilder.build());
                 embeddedDB.start();
                 DBInitializer.initializer(ui);
                 ui.showMessage("MySQL 服务启动成功。", ConsoleColors.GREEN);
