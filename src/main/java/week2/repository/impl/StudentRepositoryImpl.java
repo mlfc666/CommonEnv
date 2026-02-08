@@ -41,7 +41,7 @@ public class StudentRepositoryImpl implements StudentRepository {
                     Student student = new Student();
                     student.setStudentId(rs.getInt("student_id"));
                     student.setStudentName(rs.getString("student_name"));
-                    student.setGender(Gender.valueOf(rs.getString("gender")));
+                    student.setGender(Gender.fromDesc(rs.getString("gender")));
                     student.setAge(rs.getInt("age"));
                     student.setClassName(rs.getString("class"));
                     student.setPhone(rs.getString("phone"));
@@ -71,10 +71,10 @@ public class StudentRepositoryImpl implements StudentRepository {
                 """;
 
         return DBExecutor.executeQuery(
-                "查询性别为" + gender.name() + "的学生并排序",
+                "查询性别为" + gender.getGender() + "的学生并排序",
                 sql,
                 this::mapRowToStudent,
-                gender.name()
+                gender.getGender()
         );
     }
 
@@ -85,7 +85,7 @@ public class StudentRepositoryImpl implements StudentRepository {
         String genderStr = rs.getString("gender");
         if (genderStr != null) {
             try {
-                s.setGender(Gender.valueOf(genderStr));
+                s.setGender(Gender.fromDesc(genderStr));
             } catch (IllegalArgumentException e) {
                 s.setGender(null);
             }
@@ -112,7 +112,7 @@ public class StudentRepositoryImpl implements StudentRepository {
                 className,
                 minAge,
                 maxAge,
-                gender.name()
+                gender.getGender()
         );
     }
 

@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DBExecutor {
+    private static String extractSql(PreparedStatement stmt) {
+        if (stmt == null) return "";
+        String s = stmt.toString();
+        int index = s.indexOf(": ");
+        return index > -1 ? s.substring(index + 2) : s;
+    }
     public static int executeSql(String sql) throws SQLException {
         try (Connection conn = JdbcUtils.getConnection();
              Statement stmt = conn.createStatement()) {
@@ -15,9 +21,6 @@ public class DBExecutor {
     }
 
     public static int executeUpdate(String description, String sql, Object... params) {
-        System.out.println(ConsoleColors.CYAN + "[描述]:" + ConsoleColors.RESET + ConsoleColors.BOLD + description + ConsoleColors.RESET);
-        System.out.println(ConsoleColors.BLUE + "[SQL]:" + ConsoleColors.RESET + sql);
-
         long start = System.currentTimeMillis();
         int count = 0;
         try (Connection conn = JdbcUtils.getConnection();
@@ -29,6 +32,8 @@ public class DBExecutor {
                     stmt.setObject(i + 1, params[i]);
                 }
             }
+            System.out.println(ConsoleColors.CYAN + "[描述]:" + ConsoleColors.RESET + ConsoleColors.BOLD + description + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.BLUE + "[SQL]:" + ConsoleColors.RESET + extractSql(stmt));
 
             count = stmt.executeUpdate();
             long end = System.currentTimeMillis();

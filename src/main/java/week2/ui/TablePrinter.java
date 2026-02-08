@@ -5,6 +5,7 @@ import week2.dto.ClassGenderCountDTO;
 import week2.dto.ScoreDetailDTO;
 import week2.models.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -27,7 +28,7 @@ public class TablePrinter {
             System.out.printf(ConsoleColors.CYAN + "%-4s | %-8s | %-4s | %-4s | %-12s | %-15s\n" + ConsoleColors.RESET, "ID", "姓名", "性别", "年龄", "班级", "手机号");
             return;
         }
-        System.out.printf("%-4d | %-8s | %-4s | %-4d | %-12s | %-15s\n", s.getStudentId(), s.getStudentName(), s.getGender(), s.getAge(), s.getClassName(), s.getPhone() == null ? "NULL" : s.getPhone());
+        System.out.printf("%-4d | %-8s | %-4s | %-4d | %-12s | %-15s\n", s.getStudentId(), s.getStudentName(), s.getGender().getGender(), s.getAge(), s.getClassName(), s.getPhone() == null ? "NULL" : s.getPhone());
     }
 
     public static void printCourse(Course c) {
@@ -43,7 +44,7 @@ public class TablePrinter {
             System.out.printf(ConsoleColors.CYAN + "%-4s | %-6s | %-6s | %-6s | %-20s | %-10s\n" + ConsoleColors.RESET, "ID", "学号", "课号", "成绩", "考试时间", "备注");
             return;
         }
-        System.out.printf("%-4d | %-6d | %-6d | %-6.1f | %-20s | %-10s\n", s.getScoreId(), s.getStudentId(), s.getCourseId(), s.getScore(), s.getExamTime().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), s.getRemark());
+        System.out.printf("%-4d | %-6d | %-6d | %-6.1f | %-20s | %-10s\n", s.getScoreId(), s.getStudentId(), s.getCourseId(), s.getScore(), s.getExamTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), s.getRemark().getRemark());
     }
 
     public static void printScoreDetail(ScoreDetailDTO d) {

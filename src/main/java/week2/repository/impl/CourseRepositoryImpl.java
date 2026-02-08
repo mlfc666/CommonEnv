@@ -60,13 +60,14 @@ public class CourseRepositoryImpl implements CourseRepository {
     @Override
     public List<Course> findDistinctByCreditGreaterThanOrderByCreditDesc(Double limit) {
         String sql = """
-                SELECT DISTINCT course_name, teacher, credit FROM courses WHERE credit > ? ORDER BY credit DESC
+                SELECT DISTINCT course_id, course_name, teacher, credit FROM courses WHERE credit > ? ORDER BY credit DESC
                 """;
         return DBExecutor.executeQuery(
                 "筛选高于" + limit + "学分课程:",
                 sql,
                 rs -> {
                     Course course = new Course();
+                    course.setCourseId(rs.getInt("course_id"));
                     course.setCourseName(rs.getString("course_name"));
                     course.setTeacher(rs.getString("teacher"));
                     course.setCredit(rs.getDouble("credit"));

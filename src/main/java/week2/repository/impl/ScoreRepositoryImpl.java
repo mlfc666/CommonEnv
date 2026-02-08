@@ -43,7 +43,7 @@ public class ScoreRepositoryImpl implements ScoreRepository {
                     s.setCourseId(rs.getInt("course_id"));
                     s.setScore(rs.getDouble("score"));
                     s.setExamTime(rs.getTimestamp("exam_time").toLocalDateTime());
-                    s.setRemark(ScoreRemark.valueOf(rs.getString("remark")));
+                    s.setRemark(ScoreRemark.fromDesc(rs.getString("remark")));
                     return s;
                 }
         );
@@ -51,12 +51,18 @@ public class ScoreRepositoryImpl implements ScoreRepository {
 
     @Override
     public int updateScoreByStudentNameAndCourseName(String studentName, String courseName, Double score, ScoreRemark remark) {
-        String sql = "UPDATE scores SET score = ?, remark = ? WHERE student_name = ? AND course_name = ?";
+        String sql = """
+            UPDATE scores s
+            JOIN students stu ON s.student_id = stu.student_id
+            JOIN courses c ON s.course_id = c.course_id
+            SET s.score = ?, s.remark = ?
+            WHERE stu.student_name = ? AND c.course_name = ?
+            """;
         return DBExecutor.executeUpdate(
                 "修改成绩及备注",
                 sql,
                 score,
-                remark.name(),
+                remark.getRemark(),
                 studentName,
                 courseName
         );

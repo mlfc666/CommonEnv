@@ -15,9 +15,10 @@ public class JdbcUtils {
     private static final String DATABASE = "week2";
 
     // 添加时区和 SSL 配置
+    private static final String BASE_URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" +
+            "?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8";
     private static final String URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE +
             "?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8";
-
     private static final String USER = System.getenv("DB_USER") != null ? System.getenv("DB_USER") : "root";
     private static final String PASS = System.getenv("DB_PASS") != null ? System.getenv("DB_PASS") : "root";
 
@@ -34,27 +35,7 @@ public class JdbcUtils {
         return DriverManager.getConnection(URL, USER, PASS);
     }
 
-    public static void close(Connection conn, Statement stmt, ResultSet rs) {
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                System.err.println(ConsoleColors.RED + "[结果集关闭异常]:" + e.getMessage() + ConsoleColors.RESET);
-            }
-        }
-        if (stmt != null) {
-            try {
-                stmt.close();
-            } catch (SQLException e) {
-                System.err.println(ConsoleColors.RED + "[语句对象关闭异常]:" + e.getMessage() + ConsoleColors.RESET);
-            }
-        }
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.err.println(ConsoleColors.RED + "[数据库连接关闭异常]:" + e.getMessage() + ConsoleColors.RESET);
-            }
-        }
+    public static Connection getBaseConnection() throws SQLException {
+        return DriverManager.getConnection(BASE_URL, USER, PASS);
     }
 }

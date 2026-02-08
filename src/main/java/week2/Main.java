@@ -14,6 +14,7 @@ import week2.ui.ConsoleMenu;
 import week2.ui.TablePrinter;
 import week2.utils.DBExecutor;
 import week2.utils.DBInitializer;
+import week2.utils.JdbcUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -66,7 +67,7 @@ public class Main {
             if (embeddedDB == null) {
                 embeddedDB = DB.newEmbeddedDB(3306);
                 embeddedDB.start();
-                DBInitializer.initializer();
+                DBInitializer.initializer(ui);
                 ui.showMessage("MySQL 服务启动成功。", ConsoleColors.GREEN);
             }
         } catch (Exception e) {
@@ -140,7 +141,8 @@ public class Main {
         System.out.println("1. 学生表 | 2. 课程表 | 3. 成绩表");
         String sub = ui.askForString("请选择");
         switch (sub) {
-            case "1" -> TablePrinter.render("Students 原始表", studentService.findAll(), TablePrinter::printStudent, "空");
+            case "1" ->
+                    TablePrinter.render("Students 原始表", studentService.findAll(), TablePrinter::printStudent, "空");
             case "2" -> TablePrinter.render("Courses 原始表", courseService.findAll(), TablePrinter::printCourse, "空");
             case "3" -> TablePrinter.render("Scores 原始表", scoreService.findAll(), TablePrinter::printRawScore, "空");
         }
@@ -156,6 +158,7 @@ public class Main {
             ui.showMessage("SQL 语法错误: " + e.getMessage(), ConsoleColors.RED);
         }
     }
+
     private static void handleUpdateModule() {
         ui.printHeader("3. 更新数据");
         System.out.println("1. 高一1班全员加1岁 | 2. 修改物理课(5分/钱老师) | 3. 修改孙七成绩(60分/补考通过)");
@@ -185,9 +188,12 @@ public class Main {
         System.out.println("1. 女生名单 | 2. 高学分课程 | 3. 特定男生");
         String sub = ui.askForString("选择任务");
         switch (sub) {
-            case "1" -> TablePrinter.render("女生名单(班级升序,年龄降序)", studentService.findFemaleStudentsOrderByClassAscAgeDesc(), TablePrinter::printStudent, "无数据");
-            case "2" -> TablePrinter.render("学分>4的课程", courseService.findDistinctByCreditGreaterThanOrderByCreditDesc(4.0), TablePrinter::printCourse, "无数据");
-            case "3" -> TablePrinter.render("高一1班17-18岁男生(前2条)", studentService.findFirst2ByClassNameAndAgeBetweenAndGender("高一1班", 17, 18, Gender.MALE), TablePrinter::printStudent, "无数据");
+            case "1" ->
+                    TablePrinter.render("女生名单(班级升序,年龄降序)", studentService.findFemaleStudentsOrderByClassAscAgeDesc(), TablePrinter::printStudent, "无数据");
+            case "2" ->
+                    TablePrinter.render("学分>4的课程", courseService.findDistinctByCreditGreaterThanOrderByCreditDesc(4.0), TablePrinter::printCourse, "无数据");
+            case "3" ->
+                    TablePrinter.render("高一1班17-18岁男生(前2条)", studentService.findFirst2ByClassNameAndAgeBetweenAndGender("高一1班", 17, 18, Gender.MALE), TablePrinter::printStudent, "无数据");
         }
     }
 
