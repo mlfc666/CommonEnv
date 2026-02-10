@@ -26,12 +26,16 @@ public class Story {
 
     @Override
     public boolean equals(Object o) {
-        return (this == o) || (o instanceof Story that && Objects.equals(title, that.title));
+        if (this == o) return true;
+        if (!(o instanceof Story that)) return false;
+        return Objects.equals(title, that.title)
+                && Objects.equals(type, that.type)
+                && Objects.equals(content, that.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title);
+        return Objects.hash(title, type, content);
     }
 
     @Override
