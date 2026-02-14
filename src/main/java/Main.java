@@ -10,14 +10,16 @@ public class Main {
             容器平台：https://github.com/mlfc666/CommonDockerEnv
             1. 进入 week1：小怪兽故事记录系统
             2. 进入 week2：SQL练习演示
-            3. 进入 week3：(待开发)
+            3. 进入 week3：JDBC基础功能实现
+            4. 进入 week4：(待开发)
             0. 退出程序
             请输入周次编号进入任务:\s""";
 
     // 使用 Map 映射编号和具体的任务逻辑
     private static final Map<String, Runnable> TASK_MAP = Map.of(
             "1", () -> week1.Main.main(new String[]{}),
-            "2", () -> week2.Main.main(new String[]{})
+            "2", () -> week2.Main.main(new String[]{}),
+            "3", () -> week3.Main.main(new String[]{})
     );
 
     public static void main(String[] args) {
