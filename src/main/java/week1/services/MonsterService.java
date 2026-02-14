@@ -15,4 +15,6 @@ public interface MonsterService {
     Optional<Monster> findByName(String name);
     // 给怪兽添加故事
     boolean addStoryToMonster(String name, Story story);
+
+    Optional<Story> findStoryByMonsterAndTitle(String name, String title);
 }

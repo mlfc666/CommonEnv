@@ -1,6 +1,7 @@
 package week1.repository.impl;
 
 import week1.models.Monster;
+import week1.models.Story;
 import week1.repository.MonsterRepository;
 
 import java.util.*;
@@ -29,5 +30,12 @@ public class MonsterRepositoryImpl implements MonsterRepository {
     @Override
     public boolean existsByName(String name) {
         return storage.containsKey(name);
+    }
+
+    @Override
+    public Optional<Story> findStoryByMonsterAndTitle(String name, String title) {
+        return findByName(name).flatMap(monster -> monster.getStoryList().stream()
+                .filter(story -> story.getTitle().equals(title))
+                .findFirst());
     }
 }

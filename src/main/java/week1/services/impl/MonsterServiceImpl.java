@@ -41,6 +41,13 @@ public class MonsterServiceImpl implements MonsterService {
     }
 
     @Override
+    public Optional<Story> findStoryByMonsterAndTitle(String name, String title) {
+        Optional<Story> story =repository.findStoryByMonsterAndTitle(name, title);
+        story.ifPresent(Story::query);
+        return story;
+    }
+
+    @Override
     public List<Monster> getAllMonsters() {
         return repository.findAll();
     }
@@ -49,4 +56,6 @@ public class MonsterServiceImpl implements MonsterService {
     public Optional<Monster> findByName(String name) {
         return repository.findByName(name);
     }
+
+
 }

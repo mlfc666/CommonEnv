@@ -11,6 +11,8 @@ import common.ui.ConsoleColors;
 import week1.ui.Week1ConsoleMenu;
 import week1.ui.IllegalMonsterException;
 
+import java.util.Optional;
+
 public class Main {
     // 实例化 UI 组件和 Service 组件
     private static final Week1ConsoleMenu ui = new Week1ConsoleMenu();
@@ -84,6 +86,14 @@ public class Main {
                 m -> {
                     ui.showMessage("--- " + name + " 的故事列表 ---", ConsoleColors.PURPLE);
                     m.getStoryList().forEach(System.out::println);
+                    if (m.getStoryCount() > 0) {
+                        String title = ui.askForString("请输入要查看的故事标题");
+                        Optional<Story> story = service.findStoryByMonsterAndTitle(name, title);
+                        story.ifPresentOrElse(
+                                s -> ui.showMessage(s.getContent(), ConsoleColors.PURPLE),
+                                () -> ui.showMessage("错误：未找到该故事。", ConsoleColors.RED)
+                        );
+                    }
                 },
                 () -> ui.showMessage("错误：未找到该怪兽。", ConsoleColors.RED)
         );
