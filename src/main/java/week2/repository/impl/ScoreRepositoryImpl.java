@@ -1,10 +1,10 @@
 package week2.repository.impl;
 
+import common.utils.DBExecutor;
 import week2.dto.ScoreDetailDTO;
 import week2.enums.ScoreRemark;
 import week2.models.Score;
 import week2.repository.ScoreRepository;
-import week2.utils.DBExecutor;
 
 import java.util.List;
 

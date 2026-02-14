@@ -1,10 +1,11 @@
 package week1.ui;
 
-import common.utils.ConsoleColors;
+import common.ui.ConsoleColors;
+import common.ui.ConsoleMenu;
 import week1.enums.StoryType;
 import java.util.Scanner;
 
-public class ConsoleMenu {
+public class Week1ConsoleMenu implements ConsoleMenu {
     private final Scanner scanner = new Scanner(System.in);
 
     public void printHeader(String title) {

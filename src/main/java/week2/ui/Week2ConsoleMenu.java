@@ -1,12 +1,13 @@
 package week2.ui;
 
-import common.utils.ConsoleColors;
+import common.ui.ConsoleColors;
+import common.ui.ConsoleMenu;
 import week2.enums.Gender;
 import week2.enums.ScoreRemark;
 
 import java.util.Scanner;
 
-public class ConsoleMenu {
+public class Week2ConsoleMenu implements ConsoleMenu {
     private final Scanner scanner = new Scanner(System.in);
 
     public void printHeader(String title) {

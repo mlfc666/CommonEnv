@@ -1,7 +1,7 @@
 package week1.models;
 
 import week1.enums.StoryType;
-import common.utils.ConsoleColors;
+import common.ui.ConsoleColors;
 import week1.utils.DateUtil;
 
 import java.util.Objects;
@@ -15,6 +15,9 @@ public class Story {
     private StoryType type;
     // 创建时间（只读不改）
     private final String createTime;
+
+    private int queryCount;
+
 
     // 构造方法
     public Story(String title, String content, StoryType type) {
@@ -49,6 +52,10 @@ public class Story {
         );
     }
 
+    public void query() {
+        queryCount++;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -75,5 +82,9 @@ public class Story {
 
     public String getCreateTime() {
         return createTime;
+    }
+
+    public int getQueryCount() {
+        return queryCount;
     }
 }

@@ -1,6 +1,6 @@
-package week2.utils;
+package common.utils;
 
-import common.utils.ConsoleColors;
+import common.ui.ConsoleColors;
 
 import java.sql.*;
 import java.util.ArrayList;

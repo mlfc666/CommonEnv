@@ -1,6 +1,6 @@
 package week2.ui;
 
-import common.utils.ConsoleColors;
+import common.ui.ConsoleColors;
 import week2.dto.ClassGenderCountDTO;
 import week2.dto.ScoreDetailDTO;
 import week2.models.*;

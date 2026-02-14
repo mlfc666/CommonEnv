@@ -1,14 +1,10 @@
 package week2.utils;
 
-import common.utils.ConsoleColors;
-import week2.ui.ConsoleMenu;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import common.utils.DBInitializer;
+import week2.ui.Week2ConsoleMenu;
 
 
-public class DBInitializer {
+public class Database {
     private static final String createStudentTableSql = """
                 CREATE TABLE students (
                 -- 主键、自增
@@ -74,20 +70,10 @@ public class DBInitializer {
                 CONSTRAINT fk_course FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE
             );
             """;
-    public static void initializer(ConsoleMenu ui) {
-        try (Connection conn = JdbcUtils.getBaseConnection();
-             Statement stmt = conn.createStatement()) {
-
-            ui.showMessage("正在检测/创建数据库 week2...", ConsoleColors.CYAN);
-            stmt.executeUpdate("CREATE DATABASE IF NOT EXISTS week2 CHARACTER SET utf8mb4");
-
-        } catch (SQLException e) {
-            System.err.println("数据库创建失败: " + e.getMessage());
-            return;
-        }
-
-        DBExecutor.executeUpdate("创建学生表", createStudentTableSql);
-        DBExecutor.executeUpdate("创建课程表", createCourseTableSql);
-        DBExecutor.executeUpdate("创建成绩表", createScoreTableSql);
+    public static void init(Week2ConsoleMenu ui) {
+        DBInitializer.registerTable("students", createStudentTableSql);
+        DBInitializer.registerTable("courses", createCourseTableSql);
+        DBInitializer.registerTable("scores", createScoreTableSql);
+        DBInitializer.initializer(ui);
     }
 }

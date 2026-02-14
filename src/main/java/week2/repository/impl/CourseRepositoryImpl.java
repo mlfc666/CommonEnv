@@ -1,8 +1,8 @@
 package week2.repository.impl;
 
+import common.utils.DBExecutor;
 import week2.models.Course;
 import week2.repository.CourseRepository;
-import week2.utils.DBExecutor;
 
 import java.util.List;
 

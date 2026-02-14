@@ -1,8 +1,8 @@
 package week2;
 
-import ch.vorburger.mariadb4j.DB;
-import ch.vorburger.mariadb4j.DBConfigurationBuilder;
-import common.utils.ConsoleColors;
+import common.ui.ConsoleColors;
+import common.utils.DBExecutor;
+import common.utils.JdbcUtils;
 import week2.enums.Gender;
 import week2.enums.ScoreRemark;
 import week2.repository.CourseRepository;
@@ -11,20 +11,15 @@ import week2.repository.StudentRepository;
 import week2.repository.impl.*;
 import week2.services.*;
 import week2.services.impl.*;
-import week2.ui.ConsoleMenu;
+import week2.ui.Week2ConsoleMenu;
 import week2.ui.TablePrinter;
-import week2.utils.DBExecutor;
-import week2.utils.DBInitializer;
-import week2.utils.JdbcUtils;
+import week2.utils.Database;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Main {
-    private static final ConsoleMenu ui = new ConsoleMenu();
+    private static final Week2ConsoleMenu ui = new Week2ConsoleMenu();
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     // 初始化持久层
@@ -37,8 +32,6 @@ public class Main {
     private static final CourseService courseService = new CourseServiceImpl(courseRepo);
     private static final ScoreService scoreService = new ScoreServiceImpl(scoreRepo);
     private static final StatisticsService statisticsService = new StatisticsServiceImpl(studentRepo);
-
-    private static DB embeddedDB;
 
     public static void main(String[] args) {
         while (true) {
@@ -58,7 +51,7 @@ public class Main {
                 case "4" -> handleGroupingQuery();
                 case "5" -> handleAdvancedQuery();
                 case "0" -> {
-                    stopDatabase();
+                    JdbcUtils.stopEmbeddedDB(ui);
                     ui.showMessage("程序已退出。", ConsoleColors.YELLOW);
                     return;
                 }
@@ -68,19 +61,8 @@ public class Main {
     }
 
     private static void handleInitService() {
-        try {
-            if (embeddedDB == null) {
-                DBConfigurationBuilder configBuilder = DBConfigurationBuilder.newBuilder();
-                configBuilder.setPort(3306);
-                configBuilder.addArg("--user=root");
-                embeddedDB = DB.newEmbeddedDB(configBuilder.build());
-                embeddedDB.start();
-                DBInitializer.initializer(ui);
-                ui.showMessage("MySQL 服务启动成功。", ConsoleColors.GREEN);
-            }
-        } catch (Exception e) {
-            ui.showMessage("启动失败: " + e.getMessage(), ConsoleColors.RED);
-        }
+        JdbcUtils.startEmbeddedDB(ui);
+        Database.init(ui);
     }
 
     private static void handleInsertDefaultData() {
@@ -169,22 +151,8 @@ public class Main {
 
     private static void handleClearAllData() {
         ui.printHeader("S8. 彻底重置数据库");
-        if (!ui.askForString("确定删除并重建 week2 数据库吗？(y/n)").equalsIgnoreCase("y")) return;
-
-        try (Connection conn = JdbcUtils.getBaseConnection();
-             Statement stmt = conn.createStatement()) {
-
-            ui.showMessage("正在销毁旧数据库...", ConsoleColors.YELLOW);
-            stmt.executeUpdate("DROP DATABASE IF EXISTS week2");
-
-            ui.showMessage("正在创建新数据库...", ConsoleColors.GREEN);
-            stmt.executeUpdate("CREATE DATABASE week2 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-
-            DBInitializer.initializer(ui);
-
-            ui.showMessage("数据库重建成功！", ConsoleColors.GREEN);
-        } catch (SQLException e) {
-            ui.showMessage("操作失败: " + e.getMessage(), ConsoleColors.RED);
+        if (JdbcUtils.resetEmbeddedDB(ui)) {
+            Database.init(ui);
         }
     }
 
@@ -238,13 +206,6 @@ public class Main {
             TablePrinter.render("张老师授课成绩", scoreService.findScoresByTeacherNameOrderByScoreDesc("张老师"), TablePrinter::printScoreDetail, "无记录"); //
         } else if ("2".equals(sub)) {
             TablePrinter.render("关键字(三/五)查询结果", scoreService.findScoresByStudentNameKeywords("三", "五"), TablePrinter::printScoreDetail, "无记录"); //
-        }
-    }
-
-    private static void stopDatabase() {
-        try {
-            if (embeddedDB != null) embeddedDB.stop();
-        } catch (Exception ignored) {
         }
     }
 }

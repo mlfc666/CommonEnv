@@ -7,13 +7,13 @@ import week1.services.MonsterService;
 import week1.services.Statistics;
 import week1.services.impl.MonsterServiceImpl;
 import week1.services.impl.StatisticsImpl;
-import common.utils.ConsoleColors;
-import week1.ui.ConsoleMenu;
+import common.ui.ConsoleColors;
+import week1.ui.Week1ConsoleMenu;
 import week1.ui.IllegalMonsterException;
 
 public class Main {
     // 实例化 UI 组件和 Service 组件
-    private static final ConsoleMenu ui = new ConsoleMenu();
+    private static final Week1ConsoleMenu ui = new Week1ConsoleMenu();
     private static final MonsterService service = new MonsterServiceImpl();
     private static final Statistics statistics = new StatisticsImpl();
 

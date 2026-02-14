@@ -1,10 +1,10 @@
 package week2.repository.impl;
 
+import common.utils.DBExecutor;
 import week2.dto.ClassGenderCountDTO;
 import week2.enums.Gender;
 import week2.models.Student;
 import week2.repository.StudentRepository;
-import week2.utils.DBExecutor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

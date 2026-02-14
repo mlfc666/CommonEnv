@@ -1,4 +1,4 @@
-package common.utils;
+package common.ui;
 
 public class ConsoleColors {
     // 基础样式
