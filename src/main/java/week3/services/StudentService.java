@@ -1,4 +1,31 @@
 package week3.services;
 
+import week3.dto.StudentQueryDTO;
+import week3.entity.Student;
+import week3.dto.StudentPageDTO;
+import java.util.List;
+
 public interface StudentService {
+
+    // 新增单条学生数据
+    void addStudent(Student student);
+
+    // 根据id修改学生的姓名和年龄
+    void updateStudentInfo(Integer id, String name, Integer age);
+
+    // 根据id删除学生数据及其所有成绩 TODO(事务控制)
+    // 使用jdbc批处理（batch）方式执行sql语句
+    void deleteStudentComplete(Integer id);
+
+    // 根据id查询单个学生数
+    Student getStudentById(Integer id);
+
+    // 根据姓名模糊查询学生数据
+    List<Student> searchStudentsByNameKeyword(String keyword);
+
+    // 批量新增学生
+    void batchImportStudents(List<Student> students);
+
+    // 条件分页查询学生
+    StudentPageDTO getStudentsByPage(StudentQueryDTO query, int page, int size);
 }
