@@ -3,19 +3,8 @@ package week1.ui;
 import common.ui.ConsoleColors;
 import common.ui.ConsoleMenu;
 import week1.enums.StoryType;
-import java.util.Scanner;
 
-public class Week1ConsoleMenu implements ConsoleMenu {
-    private final Scanner scanner = new Scanner(System.in);
-
-    public void printHeader(String title) {
-        System.out.println("\n" + ConsoleColors.BLUE + "=== " + title + " ===" + ConsoleColors.RESET);
-    }
-
-    public void showMessage(String msg, String color) {
-        System.out.println(color + msg + ConsoleColors.RESET);
-    }
-
+public class Week1ConsoleMenu extends ConsoleMenu {
     public String selectOption() {
         System.out.println("\n1. 创建小怪兽 | 2. 显示列表 | 3. 添加故事 | 4. 查看故事 | 5. 统计 | 0. 退出");
         System.out.print("请选择操作编号: ");
@@ -32,11 +21,6 @@ public class Week1ConsoleMenu implements ConsoleMenu {
                 showMessage("错误：请输入有效的数字年龄！", ConsoleColors.RED);
             }
         }
-    }
-
-    public String askForString(String label) {
-        System.out.print(label + ": ");
-        return scanner.nextLine();
     }
 
     public StoryType askForStoryType() {

@@ -5,18 +5,7 @@ import common.ui.ConsoleMenu;
 import week2.enums.Gender;
 import week2.enums.ScoreRemark;
 
-import java.util.Scanner;
-
-public class Week2ConsoleMenu implements ConsoleMenu {
-    private final Scanner scanner = new Scanner(System.in);
-
-    public void printHeader(String title) {
-        System.out.println("\n" + ConsoleColors.BOLD + ConsoleColors.BLUE + "========== " + title + " ==========" + ConsoleColors.RESET);
-    }
-
-    public void showMessage(String msg, String color) {
-        System.out.println(color + msg + ConsoleColors.RESET);
-    }
+public class Week2ConsoleMenu extends ConsoleMenu {
 
     public String selectOption() {
         System.out.println("\n" + ConsoleColors.CYAN + "------- 选单管理系统 -------");
@@ -33,33 +22,6 @@ public class Week2ConsoleMenu implements ConsoleMenu {
         System.out.println("---------------------------" + ConsoleColors.RESET);
         System.out.print("请选择操作编号: ");
         return scanner.nextLine().toUpperCase();
-    }
-
-    public String askForString(String label) {
-        System.out.print(label + ": ");
-        return scanner.nextLine();
-    }
-
-    public int askForInt(String label) {
-        while (true) {
-            try {
-                System.out.print(label + ": ");
-                return Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                showMessage("错误：请输入有效的整数！", ConsoleColors.RED);
-            }
-        }
-    }
-
-    public Double askForDouble(String label) {
-        while (true) {
-            try {
-                System.out.print(label + ": ");
-                return Double.parseDouble(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                showMessage("错误：请输入有效的数字！", ConsoleColors.RED);
-            }
-        }
     }
 
     public Gender askForGender() {
