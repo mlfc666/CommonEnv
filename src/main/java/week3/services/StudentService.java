@@ -14,8 +14,7 @@ public interface StudentService {
     // 根据id修改学生的姓名和年龄
     void updateStudentInfo(Integer id, String name, Integer age);
 
-    // 根据id删除学生数据及其所有成绩 TODO(事务控制)
-    // 使用jdbc批处理（batch）方式执行sql语句
+    // 根据id删除学生数据及其所有成绩
     void deleteStudentComplete(Integer id);
 
     // 根据id查询单个学生数
