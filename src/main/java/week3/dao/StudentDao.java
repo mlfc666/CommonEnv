@@ -4,6 +4,7 @@ import week3.dto.StudentQueryDTO;
 import week3.entity.Student;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StudentDao {
     // 新增单条学生数据
@@ -16,7 +17,7 @@ public interface StudentDao {
     int deleteById(Integer id);
 
     // 根据id查询单个学生
-    Student findById(Integer id);
+    Optional<Student> findById(Integer id);
 
     // 根据姓名模糊查询学生数据
     List<Student> findByNameKeyword(String keyword);
