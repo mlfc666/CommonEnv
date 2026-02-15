@@ -15,18 +15,29 @@ public class StudentDaoImpl implements StudentDao {
     @Override
     public Student insert(Student student) {
         String sql = """
-                INSERT INTO student (name, gender, age, student_no)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO student (name, gender, age, student_no) VALUES (?, ?, ?, ?)
                 """;
         DBExecutor.executeUpdate(
                 "插入单条学生数据-" + student.getName(),
                 sql,
                 student.getName(),
-                student.getGender(),
+                student.getGender().getGender(),
                 student.getAge(),
                 student.getStudentNo()
         );
         return student;
+    }
+
+    @Override
+    public List<Student> findAll() {
+        String sql = """
+                SELECT id, name, gender, age, student_no, create_time FROM student
+                """;
+        return DBExecutor.executeQuery(
+                "查询所有学生数据",
+                sql,
+                this::mapList
+        );
     }
 
     @Override

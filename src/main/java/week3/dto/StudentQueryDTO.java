@@ -12,6 +12,13 @@ public class StudentQueryDTO {
     // 学号
     private String studentNo;
 
+    public StudentQueryDTO(String nameKeyword, String gender, Integer minAge, Integer maxAge, String studentNo) {
+        this.nameKeyword = nameKeyword;
+        this.gender = gender;
+        this.minAge = minAge;
+        this.maxAge = maxAge;
+        this.studentNo = studentNo;
+    }
     public String getNameKeyword() {
         return nameKeyword;
     }

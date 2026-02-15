@@ -20,6 +20,7 @@ public class Student {
         this.gender = gender;
         this.age = age;
         this.studentNo = studentNo;
+        this.createTime = LocalDateTime.now();
     }
 
     public Student(Integer id, String name, Gender gender, Integer age, String studentNo, LocalDateTime createTime) {
@@ -77,5 +78,16 @@ public class Student {
 
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ID: %-4d | 学号: %-10s | 姓名: %-8s | 性别: %-4s | 年龄: %-4d | 创建时间: %s",
+                id,
+                studentNo,
+                name,
+                gender != null ? gender.getGender(): "未知",
+                age,
+                createTime != null ? createTime.toString() : "NULL");
     }
 }

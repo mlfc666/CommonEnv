@@ -1,18 +1,18 @@
 package week3.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Score {
     private Integer id;
     private Integer studentId;
     private String subject;
     private Double score;
-    private LocalDate examTime;
+    private LocalDateTime examTime;
 
     public Score() {
     }
 
-    public Score(Integer studentId, String subject, Double score, LocalDate examTime) {
+    public Score(Integer studentId, String subject, Double score, LocalDateTime examTime) {
         this.studentId = studentId;
         this.subject = subject;
         this.score = score;
@@ -51,11 +51,21 @@ public class Score {
         this.score = score;
     }
 
-    public LocalDate getExamTime() {
+    public LocalDateTime getExamTime() {
         return examTime;
     }
 
-    public void setExamTime(LocalDate examTime) {
+    public void setExamTime(LocalDateTime examTime) {
         this.examTime = examTime;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ID: %-4d | 学生ID: %-4d | 科目: %-12s | 成绩: %-6.1f | 考试时间: %s",
+                id,
+                studentId,
+                subject,
+                score,
+                examTime != null ? examTime.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) : "NULL");
     }
 }

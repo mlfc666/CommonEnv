@@ -11,6 +11,9 @@ public interface StudentService {
     // 新增单条学生数据
     void addStudent(Student student);
 
+    // 查询所有学生数据
+    List<Student> findAll();
+
     // 根据id修改学生的姓名和年龄
     void updateStudentInfo(Integer id, String name, Integer age);
 

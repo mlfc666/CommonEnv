@@ -11,8 +11,7 @@ public class ScoreDaoImpl implements ScoreDao {
     @Override
     public Score insert(Score score) {
         String sql = """
-                INSERT INTO score (student_id, subject, score, exam_time)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO score (student_id, subject, score, exam_time) VALUES (?, ?, ?, ?)
                 """;
 
         DBExecutor.executeUpdate(
@@ -24,6 +23,26 @@ public class ScoreDaoImpl implements ScoreDao {
                 score.getExamTime()
         );
         return score;
+    }
+
+    @Override
+    public List<Score> findAll() {
+        String sql = """
+                SELECT id, student_id, subject, score, exam_time FROM score
+                """;
+        return DBExecutor.executeQuery(
+                "查询所有学生成绩",
+                sql,
+                (rs) -> {
+                    Score s = new Score();
+                    s.setId(rs.getInt("id"));
+                    s.setStudentId(rs.getInt("student_id"));
+                    s.setSubject(rs.getString("subject"));
+                    s.setScore(rs.getDouble("score"));
+                    s.setExamTime(rs.getTimestamp("exam_time").toLocalDateTime());
+                    return s;
+                }
+        );
     }
 
     @Override
@@ -55,7 +74,7 @@ public class ScoreDaoImpl implements ScoreDao {
                     s.setStudentId(rs.getInt("student_id"));
                     s.setSubject(rs.getString("subject"));
                     s.setScore(rs.getDouble("score"));
-                    s.setExamTime(rs.getDate("exam_time").toLocalDate());
+                    s.setExamTime(rs.getTimestamp("exam_time").toLocalDateTime());
                     return s;
                 },
                 studentNo

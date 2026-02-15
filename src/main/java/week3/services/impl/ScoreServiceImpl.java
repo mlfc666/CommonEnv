@@ -23,6 +23,11 @@ public class ScoreServiceImpl implements ScoreService {
     }
 
     @Override
+    public List<Score> findAll() {
+        return scoreDao.findAll();
+    }
+
+    @Override
     public List<Score> findScoresByStudentNo(String studentNo) {
         return scoreDao.findByStudentNo(studentNo);
     }

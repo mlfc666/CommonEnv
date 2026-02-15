@@ -8,7 +8,6 @@ import week3.dto.StudentQueryDTO;
 import week3.entity.Student;
 import week3.services.StudentService;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -28,25 +27,37 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public List<Student> findAll() {
+        return studentDao.findAll();
+    }
+
+    @Override
     public void updateStudentInfo(Integer id, String name, Integer age) {
         studentDao.updateNameAndAge(id, name, age);
     }
 
-    @Override
     public void deleteStudentComplete(Integer id) {
         try {
-            Connection conn = JdbcUtils.getConnection();
-            conn.setAutoCommit(false);
+            // 获取连接并开启事务
+            JdbcUtils.getConnection().setAutoCommit(false);
+
+            // 删除成绩
+            scoreDao.deleteByStudentId(id);
+
+            // 删除学生
+            studentDao.deleteById(id);
+
+            // 提交事务
+            JdbcUtils.getConnection().commit();
+
+        } catch (Exception e) {
             try {
-                scoreDao.deleteByStudentId(id);
-                studentDao.deleteById(id);
-                conn.commit();
-            } catch (Exception e) {
-                conn.rollback();
-                throw new RuntimeException("业务执行失败，已回滚", e);
+                // 失败回滚
+                JdbcUtils.getConnection().rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
             }
-        } catch (SQLException e) {
-            throw new RuntimeException("数据库事务操作异常", e);
+            throw new RuntimeException("数据库事务操作异常: " + e.getMessage(), e);
         } finally {
             JdbcUtils.closeConnection();
         }

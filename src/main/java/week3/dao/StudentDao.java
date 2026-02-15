@@ -10,6 +10,9 @@ public interface StudentDao {
     // 新增单条学生数据
     Student insert(Student student);
 
+    //查找全部学生数据
+    List<Student> findAll();
+
     // 根据id修改姓名和年龄
     int updateNameAndAge(Integer id, String name, Integer age);
 
