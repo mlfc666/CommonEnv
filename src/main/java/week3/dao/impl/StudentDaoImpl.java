@@ -156,7 +156,7 @@ public class StudentDaoImpl implements StudentDao {
                 params.toArray()
         );
 
-        return result.isEmpty() ? 0L : result.getFirst();
+        return result.isEmpty() ? 0L : result.get(0);
     }
 
     private Student mapList(java.sql.ResultSet rs) throws java.sql.SQLException {
