@@ -19,6 +19,10 @@
 * **目录路径**：[/week2](./src/main/java/week2)
 * **详细说明**：[查看 Week2 设计文档](./src/main/java/week2/readme.md)
 
+### 任务3：JDBC基础功能实现
+* **目录路径**：[/week3](./src/main/java/week3)
+* **详细说明**：[查看 Week3 设计文档](./src/main/java/week3/readme.md)
+
 ---
 
 ## 整体架构规范
