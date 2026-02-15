@@ -23,6 +23,7 @@ public class JdbcUtils {
     private static final String USER = System.getenv("DB_USER") != null ? System.getenv("DB_USER") : "root";
     private static final String PASS = System.getenv("DB_PASS") != null ? System.getenv("DB_PASS") : "root";
 
+    private static final ThreadLocal<Connection> threadLocal = new ThreadLocal<>();
     private static DB embeddedDB;
 
     static {
@@ -35,7 +36,28 @@ public class JdbcUtils {
     }
 
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASS);
+        Connection conn = threadLocal.get();
+        // 如果当前线程没有连接，或者连接已关闭，则创建新连接并存入 ThreadLocal
+        if (conn == null || conn.isClosed()) {
+            conn = DriverManager.getConnection(URL, USER, PASS);
+            threadLocal.set(conn);
+        }
+        return conn;
+    }
+
+    public static void closeConnection() {
+        Connection conn = threadLocal.get();
+        if (conn != null) {
+            try {
+                if (!conn.isClosed()) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                System.err.println(ConsoleColors.RED + "[关闭连接失败]:" + e.getMessage() + ConsoleColors.RESET);
+            } finally {
+                threadLocal.remove();
+            }
+        }
     }
 
     public static Connection getBaseConnection() throws SQLException {

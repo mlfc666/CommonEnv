@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface StudentDao {
     // 新增单条学生数据
-    int insert(Student student);
+    Student insert(Student student);
 
     // 根据id修改姓名和年龄
     int updateNameAndAge(Integer id, String name, Integer age);
@@ -27,4 +27,6 @@ public interface StudentDao {
 
     // 分页查询学生数据
     List<Student> findByPage(StudentQueryDTO query, int offset, int size);
+
+    long countByCondition(StudentQueryDTO query);
 }

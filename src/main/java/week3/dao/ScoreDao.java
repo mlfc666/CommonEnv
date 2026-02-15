@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface ScoreDao {
     // 新增单条学生成绩
-    int insert(Score score);
+    Score insert(Score score);
 
     // 根据student_id删除学生的所有成绩
     int deleteByStudentId(Integer studentId);

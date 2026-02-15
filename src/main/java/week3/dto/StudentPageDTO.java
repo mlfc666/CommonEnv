@@ -1,4 +1,7 @@
 package week3.dto;
 
-public class StudentPageDTO {
-}
+import week3.entity.Student;
+
+import java.util.List;
+
+public record StudentPageDTO(List<Student> data, long total){}

@@ -13,12 +13,12 @@ import java.util.Optional;
 public class StudentDaoImpl implements StudentDao {
 
     @Override
-    public int insert(Student student) {
+    public Student insert(Student student) {
         String sql = """
                 INSERT INTO student (name, gender, age, student_no)
                 VALUES (?, ?, ?, ?)
                 """;
-        return DBExecutor.executeUpdate(
+        DBExecutor.executeUpdate(
                 "插入单条学生数据-" + student.getName(),
                 sql,
                 student.getName(),
@@ -26,6 +26,7 @@ public class StudentDaoImpl implements StudentDao {
                 student.getAge(),
                 student.getStudentNo()
         );
+        return student;
     }
 
     @Override
@@ -121,6 +122,30 @@ public class StudentDaoImpl implements StudentDao {
                 this::mapList,
                 params.toArray()
         );
+    }
+
+    @Override
+    public long countByCondition(StudentQueryDTO query) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM student WHERE 1=1 ");
+        List<Object> params = new ArrayList<>();
+
+        if (query.getNameKeyword() != null && !query.getNameKeyword().isBlank()) {
+            sql.append("AND name LIKE ? ");
+            params.add("%" + query.getNameKeyword() + "%");
+        }
+        if (query.getGender() != null) {
+            sql.append("AND gender = ? ");
+            params.add(query.getGender());
+        }
+
+        List<Long> result = DBExecutor.executeQuery(
+                "统计学生总数",
+                sql.toString(),
+                rs -> rs.getLong(1),
+                params.toArray()
+        );
+
+        return result.isEmpty() ? 0L : result.getFirst();
     }
 
     private Student mapList(java.sql.ResultSet rs) throws java.sql.SQLException {

@@ -9,13 +9,13 @@ import java.util.List;
 public class ScoreDaoImpl implements ScoreDao {
 
     @Override
-    public int insert(Score score) {
+    public Score insert(Score score) {
         String sql = """
                 INSERT INTO score (student_id, subject, score, exam_time)
                 VALUES (?, ?, ?, ?)
                 """;
 
-        return DBExecutor.executeUpdate(
+        DBExecutor.executeUpdate(
                 "插入单条学生成绩-学生ID:" + score.getStudentId(),
                 sql,
                 score.getStudentId(),
@@ -23,6 +23,7 @@ public class ScoreDaoImpl implements ScoreDao {
                 score.getScore(),
                 score.getExamTime()
         );
+        return score;
     }
 
     @Override
@@ -53,7 +54,7 @@ public class ScoreDaoImpl implements ScoreDao {
                     s.setId(rs.getInt("id"));
                     s.setStudentId(rs.getInt("student_id"));
                     s.setSubject(rs.getString("subject"));
-                    s.setScore(rs.getBigDecimal("score"));
+                    s.setScore(rs.getDouble("score"));
                     s.setExamTime(rs.getDate("exam_time").toLocalDate());
                     return s;
                 },

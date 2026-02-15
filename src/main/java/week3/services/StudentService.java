@@ -4,6 +4,7 @@ import week3.dto.StudentQueryDTO;
 import week3.entity.Student;
 import week3.dto.StudentPageDTO;
 import java.util.List;
+import java.util.Optional;
 
 public interface StudentService {
 
@@ -18,7 +19,7 @@ public interface StudentService {
     void deleteStudentComplete(Integer id);
 
     // 根据id查询单个学生数
-    Student getStudentById(Integer id);
+    Optional<Student> getStudentById(Integer id);
 
     // 根据姓名模糊查询学生数据
     List<Student> searchStudentsByNameKeyword(String keyword);

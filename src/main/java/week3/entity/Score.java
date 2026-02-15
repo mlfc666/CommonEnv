@@ -1,19 +1,18 @@
 package week3.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Score {
     private Integer id;
     private Integer studentId;
     private String subject;
-    private BigDecimal score;
+    private Double score;
     private LocalDate examTime;
 
     public Score() {
     }
 
-    public Score(Integer studentId, String subject, BigDecimal score, LocalDate examTime) {
+    public Score(Integer studentId, String subject, Double score, LocalDate examTime) {
         this.studentId = studentId;
         this.subject = subject;
         this.score = score;
@@ -44,11 +43,11 @@ public class Score {
         this.subject = subject;
     }
 
-    public BigDecimal getScore() {
+    public Double getScore() {
         return score;
     }
 
-    public void setScore(BigDecimal score) {
+    public void setScore(Double score) {
         this.score = score;
     }
 

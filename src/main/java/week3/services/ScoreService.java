@@ -9,5 +9,5 @@ public interface ScoreService {
     void addScore(Score score);
 
     // 根据学号查询指定学生的所有科目成绩
-    List<Score> findScoresByStudentId(Integer studentId);
+    List<Score> findScoresByStudentNo(String studentNo);
 }
