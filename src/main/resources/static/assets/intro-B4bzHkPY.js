@@ -1,1 +1,0 @@
-import{j as e}from"./index-DcEOj-wg.js";function s(){return e.jsx("div",{children:e.jsxs("div",{className:"container mx-auto p-4",children:[e.jsx("h1",{className:"text-3xl font-bold mb-4",children:"Intro Page"}),e.jsx("p",{className:"text-lg",children:"This is the Intro page of our website."})]})})}export{s as default};

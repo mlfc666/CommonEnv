@@ -1,14 +1,70 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/logo.webp" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Territory Assistant</title>
-    <script type="module" crossorigin src="/assets/index-DcEOj-wg.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-dHiEe1aK.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>容器内 JavaWeb 测试页</title>
+
+  <!-- 注意：所有路径都以 ./ 开头，表示相对于当前 URL 路径 -->
+  <link rel="icon" href="./logo.webp">
+
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f2f5;
+    }
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    img {
+      width: 100px;
+      margin-bottom: 1rem;
+    }
+    .sid-info {
+      color: #666;
+      font-size: 0.9rem;
+      background: #eee;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <!-- 这里的 logo.webp 对应你截图里的文件 -->
+  <img src="./logo.webp" alt="Logo">
+
+  <h1>JavaWeb 服务已就绪</h1>
+  <p>这是一个运行在容器 8080 端口的普通 HTML 页面。</p>
+
+  <p>当前访问前缀: <span id="prefix-display" class="sid-info">加载中...</span></p>
+
+  <button onclick="showAlert()">点击测试 JS</button>
+</div>
+
+<script>
+  // 自动识别当前的 /web-xxxx/ 前缀
+  const pathSegments = window.location.pathname.split('/');
+  // 通常在你的架构下，第一级目录就是 web-xxxx
+  const currentSid = pathSegments[1] || 'root';
+  document.getElementById('prefix-display').innerText = '/' + currentSid;
+
+  function showAlert() {
+    alert('容器内 JavaScript 执行成功！');
+  }
+
+  console.log("页面初始化完成，相对资源路径已激活。");
+</script>
+</body>
 </html>
