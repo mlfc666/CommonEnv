@@ -11,7 +11,7 @@ public class Main {
             1. 进入 week1：小怪兽故事记录系统
             2. 进入 week2：SQL练习演示
             3. 进入 week3：JDBC基础功能实现
-            4. 进入 week4：(待开发)
+            4. 进入 week4：备忘录JavaWeb实现
             0. 退出程序
             请输入周次编号进入任务:\s""";
 
@@ -19,7 +19,8 @@ public class Main {
     private static final Map<String, Runnable> TASK_MAP = Map.of(
             "1", () -> week1.Main.main(new String[]{}),
             "2", () -> week2.Main.main(new String[]{}),
-            "3", () -> week3.Main.main(new String[]{})
+            "3", () -> week3.Main.main(new String[]{}),
+            "4", () -> week4.Main.main(new String[]{})
     );
 
     public static void main(String[] args) {
