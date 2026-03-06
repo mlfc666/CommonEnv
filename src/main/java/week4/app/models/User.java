@@ -11,7 +11,7 @@ public class User {
     /**
      * ID 编号
      */
-    private long id;
+    private Integer id;
     /**
      * 密码，用户的密码
      */
@@ -29,11 +29,11 @@ public class User {
         this.createTime = value;
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long value) {
+    public void setId(Integer value) {
         this.id = value;
     }
 
