@@ -17,5 +17,5 @@ public interface UserRepository {
     void updateLastLogoutTime(Integer userId, Long timestamp);
 
     // 获取用户记录中存储的最后登出时间戳
-    Long getLastLogoutTime(Integer userId);
+    Long getLogoutTime(Integer userId);
 }

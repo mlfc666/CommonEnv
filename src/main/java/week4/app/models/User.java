@@ -20,6 +20,14 @@ public class User {
      * 用户名，用户的账号
      */
     private String username;
+    /**
+     * 头像
+     */
+    private String avatar;
+    /**
+     * 登出时间戳
+     */
+    private long logoutTime;
 
     public long getCreateTime() {
         return createTime;
@@ -51,5 +59,21 @@ public class User {
 
     public void setUsername(String value) {
         this.username = value;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public long getLogoutTime() {
+        return logoutTime;
+    }
+
+    public void setLogoutTime(long logoutTime) {
+        this.logoutTime = logoutTime;
     }
 }

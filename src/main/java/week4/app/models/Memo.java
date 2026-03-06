@@ -12,7 +12,7 @@ public class Memo {
     /**
      * 创建时间
      */
-    private String creatTime;
+    private long creatTime;
     /**
      * ID 编号
      */
@@ -38,11 +38,11 @@ public class Memo {
         this.content = value;
     }
 
-    public String getCreatTime() {
+    public long getCreatTime() {
         return creatTime;
     }
 
-    public void setCreatTime(String value) {
+    public void setCreatTime(long value) {
         this.creatTime = value;
     }
 

@@ -3,7 +3,6 @@ package week4.app.repository;
 import week4.app.models.Memo;
 import week4.app.dto.MemoQueryDTO;
 import java.util.List;
-import java.util.Optional;
 
 public interface MemoRepository {
     // 持久化单条备忘录数据
