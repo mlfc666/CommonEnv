@@ -25,6 +25,10 @@ public class Memo {
      * 备忘录标题
      */
     private String title;
+    /**
+     * 用户ID
+     */
+    private Integer userId;
 
     public String getContent() {
         return content;
@@ -64,5 +68,13 @@ public class Memo {
 
     public void setTitle(String value) {
         this.title = value;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

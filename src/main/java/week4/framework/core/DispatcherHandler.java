@@ -22,6 +22,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class DispatcherHandler implements HttpHandler {
+    private static AuthValidator authValidator; // 给业务层注入的验证器
+
+    // 初始化
+    public static void setAuthValidator(AuthValidator validator) {
+        authValidator = validator;
+    }
     private static final Map<String, RouteInfo> routes = new HashMap<>();
     private static final Gson gson = new Gson(); // 默认忽略 null 字段
 
@@ -48,7 +54,12 @@ public class DispatcherHandler implements HttpHandler {
                 if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                     throw new UnauthorizedException("Missing Authorization Header");
                 }
-                JwtUtils.validate(authHeader.substring(7)); // 校验失败抛出 401
+                String token = authHeader.substring(7);
+                // 基础签名与过期时间校验
+                JwtUtils.validate(token);// 校验失败抛出 401
+                if (authValidator != null) {
+                    authValidator.validate(JwtUtils.getPayload(token));
+                }
             }
 
             // 参数解析

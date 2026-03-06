@@ -18,8 +18,9 @@ public class JwtUtils {
 
     /**
      * 创建 JWTToken
-     * @param subject 用户唯一标识 (sub)
-     * @param ttlSeconds 有效期（秒）
+     *
+     * @param subject          用户唯一标识 (sub)
+     * @param ttlSeconds       有效期（秒）
      * @param additionalClaims 额外的自定义信息
      */
     public static String createToken(String subject, long ttlSeconds, Map<String, Object> additionalClaims) {
@@ -55,6 +56,7 @@ public class JwtUtils {
 
     /**
      * 校验 Token 有效性
+     *
      * @param token 原始 JWT 字符串
      */
     public static void validate(String token) {
@@ -85,6 +87,20 @@ public class JwtUtils {
             throw new UnauthorizedException("身份验证失败");
         }
     }
+
+    /**
+     * 从 Token 中提取 Payload 的特定字段
+     */
+    public static JsonObject getPayload(String token) {
+        try {
+            String[] parts = token.split("\\.");
+            byte[] bytes = Base64.getUrlDecoder().decode(parts[1]);
+            return gson.fromJson(new String(bytes, StandardCharsets.UTF_8), JsonObject.class);
+        } catch (Exception e) {
+            throw new UnauthorizedException("解析 Token 失败");
+        }
+    }
+
     private static String base64UrlEncode(byte[] data) {
         return Base64.getUrlEncoder().withoutPadding().encodeToString(data);
     }
