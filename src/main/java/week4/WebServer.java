@@ -13,6 +13,7 @@ import week4.app.services.UserService;
 import week4.app.services.impl.MemoServiceImpl;
 import week4.app.services.impl.UserServiceImpl;
 import week4.framework.core.AuthValidator;
+import week4.framework.core.BeanContainer;
 import week4.framework.core.DispatcherHandler;
 import week4.framework.core.RouteScanner;
 import week4.handlers.StaticHandler;
@@ -34,6 +35,10 @@ public class WebServer {
         MemoRepository memoRepo = new MemoRepositoryImpl();
         UserService userService = new UserServiceImpl(userRepo);
         MemoService memoService = new MemoServiceImpl(memoRepo);
+
+        // 注册到 Bean 容器，供框架注入
+        BeanContainer.register(UserService.class, userService);
+        BeanContainer.register(MemoService.class, memoService);
 
         // 初始化并配置自定义验证器
         AuthValidator validator = new AppAuthValidator(userService);
