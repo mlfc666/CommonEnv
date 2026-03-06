@@ -2,43 +2,48 @@ package week4.framework.core;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.*;
+import week4.framework.models.ApiResponse;
 import week4.framework.utils.JwtUtils;
+import week4.framework.exception.*;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class DispatcherHandler implements HttpHandler {
     private static final Map<String, RouteInfo> routes = new HashMap<>();
-    private static final Gson gson = new Gson(); // 引入 Gson 实例
+    private static final Gson gson = new Gson();
 
-    public static void registerRoute(String path, RouteInfo route) { routes.put(path, route); }
+    public static void registerRoute(String path, RouteInfo route) {
+        routes.put(path, route);
+    }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        String path = exchange.getRequestURI().getPath();
-        if (path.startsWith("/web-")) path = path.replaceFirst("^/web-[^/]+", "");
-
-        RouteInfo route = routes.get(path);
-        if (route == null || !route.getHttpMethod().equals(exchange.getRequestMethod())) {
-            sendResponse(exchange, 404, "{\"error\":\"Not Found\"}");
-            return;
-        }
-
-        // JWT 鉴权校验逻辑
-        if (route.isAuthRequired()) {
-            String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
-            if (authHeader == null || !authHeader.startsWith("Bearer ") || !JwtUtils.validate(authHeader.substring(7))) {
-                sendResponse(exchange, 401, "{\"error\":\"Unauthorized\"}"); // 校验失败返回401
-                return;
-            }
-        }
-
         try {
+            // 路径预处理
+            String path = exchange.getRequestURI().getPath();
+            if (path.startsWith("/web-")) path = path.replaceFirst("^/web-[^/]+", "");
+
+            // 路由匹配
+            RouteInfo route = routes.get(path);
+            if (route == null || !route.getHttpMethod().equals(exchange.getRequestMethod())) {
+                throw new NotFoundException("Endpoint not found: " + path);
+            }
+
+            // 鉴权校验
+            if (route.isAuthRequired()) {
+                String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
+                if (authHeader == null || !authHeader.startsWith("Bearer ") || !JwtUtils.validate(authHeader.substring(7))) {
+                    throw new UnauthorizedException("Invalid or missing token");
+                }
+            }
+
+            // 参数解析与业务执行
             Object result;
             if ("POST".equals(exchange.getRequestMethod())) {
                 String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-                // 如果方法有参数，尝试将 Body 转为该参数类型的对象
                 if (route.getParameterTypes().length > 0) {
                     Object param = gson.fromJson(body, route.getParameterTypes()[0]);
                     result = route.invoke(param);
@@ -48,16 +53,47 @@ public class DispatcherHandler implements HttpHandler {
             } else {
                 result = route.invoke();
             }
-            sendResponse(exchange, 200, gson.toJson(result)); // 使用 Gson 序列化
+
+            // 成功返回
+            sendWrappedResponse(exchange, 200, "success", result);
+
         } catch (Exception e) {
-            sendResponse(exchange, 500, "{\"error\":\"Internal Server Error\"}");
+            // 6. 统一异常处理
+            handleException(exchange, e);
         }
     }
 
-    private void sendResponse(HttpExchange exchange, int code, String body) throws IOException {
+    private void handleException(HttpExchange exchange, Exception e) throws IOException {
+        // 反射异常需要解包
+        Throwable cause = (e instanceof InvocationTargetException) ? e.getCause() : e;
+
+        int code = 500;
+        String message = cause.getMessage();
+
+        // 识别业务自定义异常
+        if (cause instanceof BusinessException) {
+            code = ((BusinessException) cause).getCode();
+        } else if (cause instanceof com.google.gson.JsonSyntaxException) {
+            code = 400;
+            message = "Invalid JSON format";
+        }
+
+        if (message == null) message = "Internal Server Error";
+
+        sendWrappedResponse(exchange, code, message, null);
+    }
+
+    private void sendWrappedResponse(HttpExchange exchange, int code, String message, Object data) throws IOException {
+        ApiResponse responseContainer = new ApiResponse(code, message, data);
+        String jsonResponse = gson.toJson(responseContainer);
+
+        byte[] bytes = jsonResponse.getBytes(StandardCharsets.UTF_8);
         exchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
-        byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
+
+        // 发送对应的 HTTP 状态码
         exchange.sendResponseHeaders(code, bytes.length);
-        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(bytes);
+        }
     }
 }
