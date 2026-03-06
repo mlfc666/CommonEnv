@@ -28,4 +28,7 @@ public class UserController {
     public void uploadAvatar(@RequestPart("avatar") MultipartFile avatar) {
 
     }
+    @PostMapping("/api/user/logout")
+    public void logout() {
+    }
 }

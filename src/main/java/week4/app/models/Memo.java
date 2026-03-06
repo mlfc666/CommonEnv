@@ -42,11 +42,11 @@ public class Memo {
         this.creatTime = value;
     }
 
-    public long getid() {
+    public long getId() {
         return id;
     }
 
-    public void setid(Integer value) {
+    public void setId(Integer value) {
         this.id = value;
     }
 
