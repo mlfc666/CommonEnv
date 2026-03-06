@@ -10,6 +10,8 @@ public interface UserRepository {
     // 根据用户名精确查找用户信息
     Optional<User> findByUsername(String username);
 
+    Optional<User> findById(Integer id);
+
     // 修改指定用户的头像资源路径
     void updateAvatar(Integer userId, String avatarUrl);
 

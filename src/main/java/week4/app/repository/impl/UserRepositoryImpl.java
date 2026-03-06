@@ -3,6 +3,7 @@ package week4.app.repository.impl;
 import common.utils.DBExecutor;
 import week4.app.models.User;
 import week4.app.repository.UserRepository;
+import week4.app.utils.PasswordUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,11 +14,12 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Integer save(User user) {
-        String sql = "INSERT INTO users (username, avatar, logout_time, creat_time) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO users (username, password, avatar, logout_time, creat_time) VALUES (?, ?, ?, ?, ?)";
         return DBExecutor.executeUpdate(
                 "注册新用户: " + user.getUsername(),
                 sql,
                 user.getUsername(),
+                PasswordUtils.hash(user.getPassword()),
                 user.getAvatar(),
                 user.getLogoutTime(), // 默认为 0 或 null
                 user.getCreateTime()
@@ -26,12 +28,24 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findByUsername(String username) {
-        String sql = "SELECT id, username, avatar, logout_time, create_time FROM users WHERE username = ?";
+        String sql = "SELECT id, username, password, avatar, logout_time, create_time FROM users WHERE username = ?";
         List<User> results = DBExecutor.executeQuery(
                 "根据用户名查询用户: " + username,
                 sql,
                 this::mapRowToUser,
                 username
+        );
+        return results.stream().findFirst();
+    }
+
+    @Override
+    public Optional<User> findById(Integer id) {
+        String sql = "SELECT id, username, password, avatar, logout_time, create_time FROM users WHERE id = ?";
+        List<User> results = DBExecutor.executeQuery(
+                "根据 ID 查询用户: " + id,
+                sql,
+                this::mapRowToUser,
+                id
         );
         return results.stream().findFirst();
     }
@@ -68,6 +82,7 @@ public class UserRepositoryImpl implements UserRepository {
         User user = new User();
         user.setId(rs.getInt("id"));
         user.setUsername(rs.getString("username"));
+        user.setPassword(rs.getString("password"));
         user.setAvatar(rs.getString("avatar"));
         user.setLogoutTime(rs.getLong("logout_time"));
         user.setCreateTime(rs.getLong("create_time"));

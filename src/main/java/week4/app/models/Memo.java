@@ -46,7 +46,7 @@ public class Memo {
         this.creatTime = value;
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 

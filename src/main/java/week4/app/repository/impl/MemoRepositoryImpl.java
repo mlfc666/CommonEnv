@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MemoRepositoryImpl implements MemoRepository {
 
@@ -49,6 +50,19 @@ public class MemoRepositoryImpl implements MemoRepository {
                 memo.getId(),
                 userId
         );
+    }
+
+    @Override
+    public Optional<Memo> findById(Integer id, Integer userId) {
+        String sql = "SELECT * FROM memos WHERE id = ? AND user_id = ?";
+        List<Memo> results = DBExecutor.executeQuery(
+                "按ID查询备忘录",
+                sql,
+                this::mapRowToMemo,
+                id,
+                userId
+        );
+        return results.isEmpty() ? Optional.empty() : Optional.of(results.get(0));
     }
 
     @Override

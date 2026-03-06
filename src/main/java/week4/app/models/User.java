@@ -17,6 +17,10 @@ public class User {
      */
     private String username;
     /**
+     * 密码
+     */
+    private String password;
+    /**
      * 头像
      */
     private String avatar;
@@ -63,5 +67,13 @@ public class User {
 
     public void setLogoutTime(long logoutTime) {
         this.logoutTime = logoutTime;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
