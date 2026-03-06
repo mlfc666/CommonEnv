@@ -3,7 +3,8 @@ package week4;
 import com.sun.net.httpserver.HttpServer;
 import common.ui.ConsoleColors;
 import common.ui.ConsoleMenu;
-import week4.handlers.ApiHandler;
+import week4.framework.core.DispatcherHandler;
+import week4.framework.core.RouteScanner;
 import week4.handlers.StaticHandler;
 
 import java.net.InetSocketAddress;
@@ -19,9 +20,10 @@ public class WebServer {
 
     public void start() throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
-
+        // 扫描并注册控制器
+        RouteScanner.scan("week4.app.controllers");
         // 注册处理器
-        server.createContext("/api", new ApiHandler()); // 优先匹配 API
+        server.createContext("/api", new DispatcherHandler()); // 优先匹配 API
         server.createContext("/", new StaticHandler()); // 其他全部走静态资源
 
         server.setExecutor(null);
