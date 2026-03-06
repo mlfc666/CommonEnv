@@ -33,11 +33,14 @@ public class DispatcherHandler implements HttpHandler {
             }
 
             // 鉴权校验
+
             if (route.isAuthRequired()) {
                 String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
-                if (authHeader == null || !authHeader.startsWith("Bearer ") || !JwtUtils.validate(authHeader.substring(7))) {
-                    throw new UnauthorizedException("Invalid or missing token");
+                if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                    throw new UnauthorizedException("未发现认证信息");
                 }
+                // 如果 Token 过期或非法，validate 会直接抛出异常并由外层 catch 住返回 401
+                JwtUtils.validate(authHeader.substring(7));
             }
 
             // 参数解析与业务执行
