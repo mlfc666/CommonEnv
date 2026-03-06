@@ -3,7 +3,6 @@ package week4.app.repository.impl;
 import common.utils.DBExecutor;
 import week4.app.models.User;
 import week4.app.repository.UserRepository;
-import week4.app.utils.PasswordUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,15 +13,15 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Integer save(User user) {
-        String sql = "INSERT INTO users (username, password, avatar, logout_time, creat_time) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (username, password, avatar, logout_time, create_time) VALUES (?, ?, ?, ?, ?)";
         return DBExecutor.executeUpdate(
                 "注册新用户: " + user.getUsername(),
                 sql,
                 user.getUsername(),
-                PasswordUtils.hash(user.getPassword()),
+                user.getPassword(),
                 user.getAvatar(),
                 user.getLogoutTime(), // 默认为 0 或 null
-                user.getCreateTime()
+                System.currentTimeMillis()
         );
     }
 

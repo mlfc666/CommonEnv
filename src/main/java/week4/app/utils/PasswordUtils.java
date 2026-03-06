@@ -26,4 +26,7 @@ public class PasswordUtils {
             throw new RuntimeException("SHA-256 algorithm not found");
         }
     }
+    public static boolean verify(String input, String hashed) {
+        return hash(input).equals(hashed);
+    }
 }

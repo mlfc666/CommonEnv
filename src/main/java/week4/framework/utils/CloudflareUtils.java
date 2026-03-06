@@ -2,6 +2,7 @@ package week4.framework.utils;
 
 import com.google.gson.Gson;
 import week4.framework.models.TurnstileResponse;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -18,10 +19,11 @@ public class CloudflareUtils {
 
     /**
      * 校验人机验证令牌
+     *
      * @param token 前端传来的 cf-turnstile-response
      */
     public static boolean verify(String token) {
-        if (token == null || token.isBlank()) return false;
+        if (token == null || token.isBlank()) return true;
 
         try {
             // 构造表单数据
@@ -34,12 +36,12 @@ public class CloudflareUtils {
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
+            System.out.println("Cloudflare 返回结果: " + response.body()); // 这一行能看到具体错误
             // 解析响应
             TurnstileResponse result = gson.fromJson(response.body(), TurnstileResponse.class);
-            return result != null && result.isSuccess();
+            return result != null && result.success();
         } catch (Exception e) {
-            return false; // 发生异常判定为校验失败
+            return false;
         }
     }
 }

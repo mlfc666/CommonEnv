@@ -24,8 +24,13 @@ public class DispatcherHandler implements HttpHandler {
     private static final Map<String, RouteInfo> routes = new HashMap<>();
     private static final Gson gson = new Gson();
 
-    public static void setAuthValidator(AuthValidator validator) { authValidator = validator; }
-    public static void registerRoute(String path, RouteInfo route) { routes.put(path, route); }
+    public static void setAuthValidator(AuthValidator validator) {
+        authValidator = validator;
+    }
+
+    public static void registerRoute(String path, RouteInfo route) {
+        routes.put(path, route);
+    }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -85,7 +90,10 @@ public class DispatcherHandler implements HttpHandler {
                 fileMap = MultipartUtils.parse(bodyBytes, boundary);
             } else {
                 bodyStr = new String(bodyBytes, StandardCharsets.UTF_8);
-                try { if (!bodyStr.isBlank()) jsonBody = JsonParser.parseString(bodyStr).getAsJsonObject(); } catch (Exception ignored) {}
+                try {
+                    if (!bodyStr.isBlank()) jsonBody = JsonParser.parseString(bodyStr).getAsJsonObject();
+                } catch (Exception ignored) {
+                }
             }
         }
         Map<String, String> queryMap = parseQuery(exchange.getRequestURI().getQuery());
@@ -98,16 +106,13 @@ public class DispatcherHandler implements HttpHandler {
             if (p.isAnnotationPresent(AuthClaim.class)) {
                 if (payload == null) throw new UnauthorizedException("Session required");
                 args[i] = extractFromJson(p, payload, p.getAnnotation(AuthClaim.class).value(), true);
-            }
-            else if (p.isAnnotationPresent(RequestBody.class)) {
+            } else if (p.isAnnotationPresent(RequestBody.class)) {
                 if (bodyStr == null || bodyStr.isBlank()) throw new BadRequestException("Body is empty");
                 args[i] = gson.fromJson(bodyStr, p.getType());
-            }
-            else if (p.isAnnotationPresent(RequestPart.class)) {
+            } else if (p.isAnnotationPresent(RequestPart.class)) {
                 if (fileMap == null) throw new BadRequestException("Not a multipart request");
                 args[i] = fileMap.get(p.getAnnotation(RequestPart.class).value());
-            }
-            else if (p.isAnnotationPresent(RequestParam.class)) {
+            } else if (p.isAnnotationPresent(RequestParam.class)) {
                 RequestParam ann = p.getAnnotation(RequestParam.class);
                 if ("POST".equals(method) && jsonBody != null) {
                     args[i] = extractFromJson(p, jsonBody, ann.value(), ann.required());
@@ -139,7 +144,9 @@ public class DispatcherHandler implements HttpHandler {
             if (type == Boolean.class || type == boolean.class) return Boolean.parseBoolean(value);
             if (type == Double.class || type == double.class) return Double.parseDouble(value);
             return value;
-        } catch (Exception e) { throw new BadRequestException("Type mismatch: " + value); }
+        } catch (Exception e) {
+            throw new BadRequestException("Type mismatch: " + value);
+        }
     }
 
     private Map<String, String> parseQuery(String query) {
@@ -154,11 +161,16 @@ public class DispatcherHandler implements HttpHandler {
 
     private void handleException(HttpExchange exchange, Exception e) throws IOException {
         Throwable cause = (e instanceof InvocationTargetException) ? e.getCause() : e;
+        cause.printStackTrace();
         int status = 500;
         String message = cause.getMessage();
         if (cause instanceof BusinessException) status = ((BusinessException) cause).getCode();
-        else if (cause instanceof com.google.gson.JsonSyntaxException) { status = 400; message = "JSON Syntax Error"; }
-        if (message == null) message = "Internal Server Error";
+        else if (cause instanceof com.google.gson.JsonSyntaxException) {
+            status = 400;
+            message = "JSON Syntax Error";
+        }
+        if (message == null)
+            message = "Internal Server Error\n[ERROR] " + cause.getClass().getSimpleName() + ": " + e.getMessage();
         sendWrappedResponse(exchange, status, message, null);
     }
 
@@ -167,6 +179,8 @@ public class DispatcherHandler implements HttpHandler {
         byte[] bytes = gson.toJson(apiResponse).getBytes(StandardCharsets.UTF_8);
         exchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
         exchange.sendResponseHeaders(status, bytes.length);
-        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(bytes);
+        }
     }
 }

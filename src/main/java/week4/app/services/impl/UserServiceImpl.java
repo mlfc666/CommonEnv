@@ -39,10 +39,10 @@ public class UserServiceImpl implements UserService {
         user.setUsername(dto.username());
         user.setPassword(PasswordUtils.hash(dto.password()));
         user.setLogoutTime(0L);
-        userRepository.save(user);
+        Integer userId = userRepository.save(user);
         // 相当于自动登录
         // 签发 JWT 令牌，Payload 注入用户 ID (uid)
-        return JwtUtils.createToken(user.getUsername(), 3600, Map.of("uid", user.getId()));
+        return JwtUtils.createToken(user.getUsername(), 3600, Map.of("uid", userId));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsername(dto.username())
                 .orElseThrow(() -> new UnauthorizedException("用户名或密码错误"));
         // 比对加盐后的密码密文
-        if (!user.getPassword().equals(PasswordUtils.hash(dto.password()))) {
+        if (!PasswordUtils.verify(dto.password(), user.getPassword())) {
             throw new UnauthorizedException("用户名或密码错误");
         }
         // 签发 JWT 令牌，Payload 注入用户 ID (uid)
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
         // 生成新文件并写入磁盘
         String fileName = "avatar_" + userId + "_" + System.currentTimeMillis() + ext;
         try (FileOutputStream fos = new FileOutputStream(uploadDir + fileName)) {
-            fos.write(file.getData());
+            fos.write(file.data());
         } catch (IOException e) {
             throw new InternalErrorException("磁盘写入异常: " + e.getMessage());
         }
@@ -107,12 +107,12 @@ public class UserServiceImpl implements UserService {
     }
 
     private static @NonNull String getString(MultipartFile file) {
-        if (file == null || file.getData().length == 0) {
+        if (file == null || file.data().length == 0) {
             throw new BadRequestException("上传文件不能为空");
         }
 
         // 检查后缀名
-        String originalName = file.getFileName();
+        String originalName = file.fileName();
         if (originalName == null || !originalName.contains(".")) {
             throw new BadRequestException("非法文件名");
         }
