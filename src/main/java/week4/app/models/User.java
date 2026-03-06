@@ -13,10 +13,6 @@ public class User {
      */
     private Integer id;
     /**
-     * 密码，用户的密码
-     */
-    private String password;
-    /**
      * 用户名，用户的账号
      */
     private String username;
@@ -43,14 +39,6 @@ public class User {
 
     public void setId(Integer value) {
         this.id = value;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String value) {
-        this.password = value;
     }
 
     public String getUsername() {
