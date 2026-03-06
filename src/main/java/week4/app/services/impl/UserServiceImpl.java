@@ -2,6 +2,7 @@ package week4.app.services.impl;
 
 import org.jspecify.annotations.NonNull;
 import week4.app.dto.LoginDTO;
+import week4.app.dto.UserInfoDTO;
 import week4.app.models.User;
 import week4.app.repository.UserRepository;
 import week4.app.services.UserService;
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> register(LoginDTO dto) {
+    public String register(LoginDTO dto) {
         // 校验 Cloudflare 人机验证令牌
         if (!CloudflareUtils.verify(dto.cfToken())) {
             throw new ForbiddenException("人机验证未通过");
@@ -39,12 +40,13 @@ public class UserServiceImpl implements UserService {
         user.setPassword(PasswordUtils.hash(dto.password()));
         user.setLogoutTime(0L);
         userRepository.save(user);
-
-        return Map.of("status", "success", "message", "注册成功");
+        // 相当于自动登录
+        // 签发 JWT 令牌，Payload 注入用户 ID (uid)
+        return JwtUtils.createToken(user.getUsername(), 3600, Map.of("uid", user.getId()));
     }
 
     @Override
-    public Map<String, Object> login(LoginDTO dto) {
+    public String login(LoginDTO dto) {
         // 登录同样强制要求人机验证
         if (!CloudflareUtils.verify(dto.cfToken())) {
             throw new ForbiddenException("人机验证未通过");
@@ -57,10 +59,14 @@ public class UserServiceImpl implements UserService {
             throw new UnauthorizedException("用户名或密码错误");
         }
         // 签发 JWT 令牌，Payload 注入用户 ID (uid)
-        String token = JwtUtils.createToken(user.getUsername(), 3600, Map.of("uid", user.getId()));
+        return JwtUtils.createToken(user.getUsername(), 3600, Map.of("uid", user.getId()));
+    }
 
-        return Map.of("token", token, "username", user.getUsername(), "avatar",
-                user.getAvatar() != null ? user.getAvatar() : "");
+    @Override
+    public UserInfoDTO getUserInfo(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("用户不存在"));
+        return new UserInfoDTO(user.getUsername(), user.getCreateTime(), user.getId(), user.getAvatar());
     }
 
     @Override

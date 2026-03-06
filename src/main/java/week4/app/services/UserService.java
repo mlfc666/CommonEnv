@@ -1,16 +1,17 @@
 package week4.app.services;
 
 import week4.app.dto.LoginDTO;
+import week4.app.dto.UserInfoDTO;
 import week4.framework.models.MultipartFile;
-
-import java.util.Map;
 
 public interface UserService {
     // 验证参数并执行用户注册逻辑
-    Map<String, Object> register(LoginDTO dto);
+    String register(LoginDTO dto);
 
     // 校验身份凭证并签发JWT令牌
-    Map<String, Object> login(LoginDTO dto);
+    String login(LoginDTO dto);
+
+    UserInfoDTO getUserInfo(Integer userId);
 
     // 处理二进制头像上传并关联至用户
     String uploadAvatar(Integer userId, MultipartFile file);
