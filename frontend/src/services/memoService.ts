@@ -1,6 +1,7 @@
 import type {MemoQueryDTO} from "../types/MemoQueryDTO.ts";
 import type {ApiResponse} from "../types/ApiResponse.ts";
 import type {Memo} from "../types/Memo.ts";
+import type {MemoInfoDTO} from "../types/MemoInfoDTO.ts";
 
 export const memoService = {
     // 根据组合查询条件分页获取当前用户的备忘录列表
@@ -57,10 +58,10 @@ export const memoService = {
         return response.json();
     },
 
-    // 获取当前用户在所有备忘录中创建的标签集合
-    async getAllTags(): Promise<ApiResponse<string[]>> {
+    // 获取当前用户的备忘录统计信息包含全量标签与记录总数
+    async getMemoInfo(): Promise<ApiResponse<MemoInfoDTO>> {
         const token = localStorage.getItem("jwt_token");
-        const response = await fetch("/api/memo/tags", {
+        const response = await fetch("/api/memo/info", {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
