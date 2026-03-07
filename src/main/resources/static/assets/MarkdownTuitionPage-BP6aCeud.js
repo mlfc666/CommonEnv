@@ -1,0 +1,1 @@
+import{j as o}from"./index-B0j9C3i-.js";import{R as r}from"./RemoteMarkdownRender-ClKTHncQ.js";import"./CheckIcon-BJYpUhwd.js";function n(){return o.jsx(r,{fileName:"MarkdownTuition.md"})}export{n as default};

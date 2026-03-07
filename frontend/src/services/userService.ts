@@ -3,8 +3,17 @@ import type {UserInfoDTO} from "../types/UserInfoDTO.ts";
 import type {PasswordUpdateDTO} from "../types/PasswordUpdateDTO.ts";
 import type {LoginDTO} from "../types/LoginDTO.ts";
 
+// 动态计算 API 基础路径
+const getApiUrl = (path: string) => {
+    const pathname = window.location.pathname;
+    // 匹配 /web- 开头跟随任意非斜杠字符的路径段
+    const match = pathname.match(/\/web-[^/]+/);
+    // 如果匹配到了前缀则使用前缀，否则（如在 localhost）使用根路径 /
+    const base = match ? match[0] + '/' : '/';
+    return base + path;
+};
+
 export const userService = {
-    // 使用 Web Crypto API 执行生产级 SHA-256 哈希算法
     async hashPassword(password: string): Promise<string> {
         const encoder = new TextEncoder();
         const data = encoder.encode(password);
@@ -13,9 +22,8 @@ export const userService = {
         return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     },
 
-    // 提交登录凭据并返回身份验证令牌
     async login(payload: LoginDTO): Promise<ApiResponse<string>> {
-        const response = await fetch("api/user/login", {
+        const response = await fetch(getApiUrl("api/user/login"), {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(payload)
@@ -23,9 +31,8 @@ export const userService = {
         return response.json();
     },
 
-    // 提交注册信息并返回身份验证令牌
     async register(payload: LoginDTO): Promise<ApiResponse<string>> {
-        const response = await fetch("api/user/register", {
+        const response = await fetch(getApiUrl("api/user/register"), {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(payload)
@@ -33,21 +40,19 @@ export const userService = {
         return response.json();
     },
 
-    // 获取当前通过身份验证的完整用户资料
     async getUserInfo(): Promise<ApiResponse<UserInfoDTO>> {
         const token = localStorage.getItem("jwt_token");
-        const response = await fetch("api/user/info", {
+        const response = await fetch(getApiUrl("api/user/info"), {
             headers: {"Authorization": `Bearer ${token}`}
         });
         return response.json();
     },
 
-    // 执行头像文件上传并在成功后返回访问路径
     async uploadAvatar(file: File): Promise<ApiResponse<string>> {
         const token = localStorage.getItem("jwt_token");
         const formData = new FormData();
         formData.append("avatar", file);
-        const response = await fetch("api/user/upload-avatar", {
+        const response = await fetch(getApiUrl("api/user/upload-avatar"), {
             method: "POST",
             headers: {"Authorization": `Bearer ${token}`},
             body: formData
@@ -55,10 +60,9 @@ export const userService = {
         return response.json();
     },
 
-    // 更新当前用户的显示名称
     async updateUsername(username: string): Promise<ApiResponse<string>> {
         const token = localStorage.getItem("jwt_token");
-        const response = await fetch("api/user/update-username", {
+        const response = await fetch(getApiUrl("api/user/update-username"), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -69,10 +73,9 @@ export const userService = {
         return response.json();
     },
 
-    // 校验旧密码并设置新的账户登录密码
     async updatePassword(data: PasswordUpdateDTO): Promise<ApiResponse<string>> {
         const token = localStorage.getItem("jwt_token");
-        const response = await fetch("api/user/update-password", {
+        const response = await fetch(getApiUrl("api/user/update-password"), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -83,10 +86,9 @@ export const userService = {
         return response.json();
     },
 
-    // 永久从系统中移除当前用户的账户与所有相关数据
     async deleteAccount(): Promise<ApiResponse<string>> {
         const token = localStorage.getItem("jwt_token");
-        const response = await fetch("api/user/delete", {
+        const response = await fetch(getApiUrl("api/user/delete"), {
             method: "POST",
             headers: {"Authorization": `Bearer ${token}`}
         });
