@@ -90,6 +90,42 @@ const lang = {
             }
         }
     },
+    memo: {
+        filter: {
+            search_placeholder: "搜索关键词...",
+            all_tags: "全部标签",
+            tag_work: "工作",
+            tag_life: "生活",
+            all_time: "全部时间范围",
+            days_3: "最近 3 天",
+            days_7: "最近 7 天",
+            submit: "搜索"
+        },
+        card: {
+            no_title: "无标题",
+            no_content: "暂无内容..."
+        },
+        drawer: {
+            title: "编辑备忘录",
+            subtitle: "Drafting Area",
+            label_title: "备忘录标题",
+            placeholder_title: "输入标题...",
+            label_content: "详细内容",
+            placeholder_content: "在这里开始记录...",
+            label_tags: "标签 (用英文逗号分隔)",
+            placeholder_tags: "例如: 工作, 紧急, 灵感",
+            btn_delete: "删除",
+            btn_save: "保存修改"
+        },
+        page: {
+            new_btn: "新建备忘录",
+            pagination_showing: "正在显示",
+            pagination_of: "条，共",
+            pagination_memos: "条记录",
+            pagination_prev: "上一页",
+            pagination_next: "下一页"
+        }
+    },
     language: "简体中文",
     loading: "加载中..."
 }
