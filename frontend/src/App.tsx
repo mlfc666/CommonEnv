@@ -6,6 +6,8 @@ import {HashRouter, Navigate, Outlet, Route, Routes} from "react-router-dom";
 import Sidebar from "./components/Sidebar.tsx";
 import {navigation} from "./components/Navigation.tsx";
 import {renderRoutes} from "./components/RenderRoutes.tsx";
+import LoginPage from "./pages/LoginPage.tsx";
+import RegisterPage from "./pages/RegisterPage.tsx";
 
 
 
@@ -44,6 +46,8 @@ function App() {
         <HashRouter>
             <Suspense fallback={<div className="h-screen flex items-center justify-center"><span className="loading loading-spinner loading-lg"></span></div>}>
                 <Routes>
+                    <Route path="/login" element={<LoginPage/>}/>
+                    <Route path="/register" element={<RegisterPage/>}/>
                     <Route path="/" element={<MainLayout/>}>
                         <Route index  element={<Navigate to="/website" replace />} />
 

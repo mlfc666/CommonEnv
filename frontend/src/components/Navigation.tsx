@@ -5,6 +5,9 @@ import {
     ClipboardDocumentIcon,
     UserCircleIcon
 } from "@heroicons/react/24/outline";
+import SecurityPage from "../pages/person/SecurityPage.tsx";
+import UserInfoPage from "../pages/person/UserInfoPage.tsx";
+import MemoPage from "../pages/memo/MemoPage.tsx";
 
 const IntroductionPage = lazy(() => import('../pages/IntroductionPage.tsx'));
 const MarkdownTuitionPage = lazy(() => import('../pages/MarkdownTuitionPage.tsx'));
@@ -30,7 +33,7 @@ export const navigation: NavItem[] = [
     {
         key: 'memo',
         icon: <ClipboardDocumentIcon className="w-5 h-5"/>,
-        element: <IntroductionPage/>,
+        element: <MemoPage/>,
     },
     {
         key: 'md',
@@ -44,11 +47,12 @@ export const navigation: NavItem[] = [
         children: [
             {
                 key: 'info',
-                element: <MarkdownTuitionPage/>,
+                element: <UserInfoPage/>,
+
             },
             {
                 key: 'security',
-                element: <MarkdownTuitionPage/>,
+                element: <SecurityPage/>,
             },
         ],
     },
