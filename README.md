@@ -23,9 +23,10 @@
 * **目录路径**：[/week3](./src/main/java/week3)
 * **详细说明**：[查看 Week3 设计文档](./src/main/java/week3/readme.md)
 
-### 任务3：JDBC基础功能实现
+### 任务4：备忘录管理系统
 * **目录路径**：[/week4](./src/main/java/week4)
 * **详细说明**：[查看 Week4 设计文档](./src/main/java/week4/readme.md)
+* **API说明文档**：[查看 Api 设计文档](./src/main/java/week4/API_README.md)
 ---
 
 ## 整体架构规范

@@ -58,7 +58,7 @@ public class Main {
 
     // 处理原始系统表数据的可视化输出指令
     private static void handleShowRawTables() {
-        ui.printHeader("S6. 查看系统原始表数据");
+        ui.printHeader("S3. 查看系统原始表数据");
         System.out.println("1. 用户账户表 | 2. 备忘录数据表");
         String sub = ui.askForString("请选择要查看的表");
 
