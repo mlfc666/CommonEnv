@@ -1,16 +1,55 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { PencilSquareIcon, XMarkIcon, TagIcon, TrashIcon, CheckIcon } from "@heroicons/react/24/outline";
+import { memoService } from "../../../services/memoService.ts";
 import type { Memo } from "../../../types/Memo.ts";
 
 interface MemoDrawerProps {
     memo: Memo | null;
     setMemo: React.Dispatch<React.SetStateAction<Memo | null>>;
+    onSuccess: () => void;
 }
 
-// 备忘录抽屉组件提供沉浸式的编辑与创建环境
-export const MemoDrawer: React.FC<MemoDrawerProps> = ({ memo, setMemo }) => {
+// 备忘录抽屉组件集成内容编辑与后端数据同步逻辑
+export const MemoDrawer: React.FC<MemoDrawerProps> = ({ memo, setMemo, onSuccess }) => {
     const { t } = useTranslation();
+
+    // 通过操作复选框状态来关闭侧边栏界面
+    const closeDrawer = () => {
+        const toggle = document.getElementById("memo-drawer") as HTMLInputElement;
+        if (toggle) toggle.checked = false;
+    };
+
+    // 根据是否存在编号调用对应的创建或更新接口
+    const handleSave = async () => {
+        if (!memo) return;
+        try {
+            const res = memo.id
+                ? await memoService.updateMemo(memo)
+                : await memoService.createMemo(memo);
+
+            if (res.code === 200) {
+                onSuccess();
+                closeDrawer();
+            }
+        } catch (error) {
+            console.error("提交备忘录数据失败" +  error);
+        }
+    };
+
+    // 调用删除接口移除指定编号的备忘录记录
+    const handleDelete = async () => {
+        if (!memo || !memo.id) return;
+        try {
+            const res = await memoService.deleteMemo(memo.id);
+            if (res.code === 200) {
+                onSuccess();
+                closeDrawer();
+            }
+        } catch (error) {
+            console.error("移除备忘录数据失败" + error);
+        }
+    };
 
     return (
         <div className="drawer-side z-100">
@@ -63,10 +102,16 @@ export const MemoDrawer: React.FC<MemoDrawerProps> = ({ memo, setMemo }) => {
                     </fieldset>
                 </div>
                 <div className="flex gap-4 pt-10 mt-6 border-t border-base-200">
-                    <button className="btn btn-ghost flex-1 h-12 text-error gap-2 hover:bg-error/10">
+                    <button
+                        onClick={handleDelete}
+                        className={`btn btn-ghost flex-1 h-12 text-error gap-2 hover:bg-error/10 ${!memo?.id ? 'btn-disabled opacity-30' : ''}`}
+                    >
                         <TrashIcon className="w-5 h-5" /> {t('memo.drawer.btn_delete')}
                     </button>
-                    <button className="btn bg-base-content text-base-100 flex-2 h-12 rounded-lg shadow-xl shadow-base-content/10 font-bold hover:bg-black transition-all">
+                    <button
+                        onClick={handleSave}
+                        className="btn bg-base-content text-base-100 flex-2 h-12 rounded-lg shadow-xl shadow-base-content/10 font-bold hover:bg-black transition-all border-none"
+                    >
                         <CheckIcon className="w-5 h-5" /> {t('memo.drawer.btn_save')}
                     </button>
                 </div>

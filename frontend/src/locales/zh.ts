@@ -94,8 +94,6 @@ const lang = {
         filter: {
             search_placeholder: "搜索关键词...",
             all_tags: "全部标签",
-            tag_work: "工作",
-            tag_life: "生活",
             all_time: "全部时间范围",
             days_3: "最近 3 天",
             days_7: "最近 7 天",
