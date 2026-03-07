@@ -15,7 +15,7 @@ export const userService = {
 
     // 提交登录凭据并返回身份验证令牌
     async login(payload: LoginDTO): Promise<ApiResponse<string>> {
-        const response = await fetch("/api/user/login", {
+        const response = await fetch("api/user/login", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(payload)
@@ -25,7 +25,7 @@ export const userService = {
 
     // 提交注册信息并返回身份验证令牌
     async register(payload: LoginDTO): Promise<ApiResponse<string>> {
-        const response = await fetch("/api/user/register", {
+        const response = await fetch("api/user/register", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(payload)
@@ -36,7 +36,7 @@ export const userService = {
     // 获取当前通过身份验证的完整用户资料
     async getUserInfo(): Promise<ApiResponse<UserInfoDTO>> {
         const token = localStorage.getItem("jwt_token");
-        const response = await fetch("/api/user/info", {
+        const response = await fetch("api/user/info", {
             headers: {"Authorization": `Bearer ${token}`}
         });
         return response.json();
@@ -47,7 +47,7 @@ export const userService = {
         const token = localStorage.getItem("jwt_token");
         const formData = new FormData();
         formData.append("avatar", file);
-        const response = await fetch("/api/user/upload-avatar", {
+        const response = await fetch("api/user/upload-avatar", {
             method: "POST",
             headers: {"Authorization": `Bearer ${token}`},
             body: formData
@@ -58,7 +58,7 @@ export const userService = {
     // 更新当前用户的显示名称
     async updateUsername(username: string): Promise<ApiResponse<string>> {
         const token = localStorage.getItem("jwt_token");
-        const response = await fetch("/api/user/update-username", {
+        const response = await fetch("api/user/update-username", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -72,7 +72,7 @@ export const userService = {
     // 校验旧密码并设置新的账户登录密码
     async updatePassword(data: PasswordUpdateDTO): Promise<ApiResponse<string>> {
         const token = localStorage.getItem("jwt_token");
-        const response = await fetch("/api/user/update-password", {
+        const response = await fetch("api/user/update-password", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -86,7 +86,7 @@ export const userService = {
     // 永久从系统中移除当前用户的账户与所有相关数据
     async deleteAccount(): Promise<ApiResponse<string>> {
         const token = localStorage.getItem("jwt_token");
-        const response = await fetch("/api/user/delete", {
+        const response = await fetch("api/user/delete", {
             method: "POST",
             headers: {"Authorization": `Bearer ${token}`}
         });

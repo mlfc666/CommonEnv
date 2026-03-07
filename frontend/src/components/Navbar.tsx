@@ -77,7 +77,7 @@ export function Navbar() {
         <div className="navbar bg-base-100 shadow-sm text-base-content">
             <div className="navbar-start">
                 <div className="avatar ml-4 mr-2">
-                    <div className="w-12 rounded-lg"><img src="/logo.webp" alt="Logo"/></div>
+                    <div className="w-12 rounded-lg"><img src="./logo.webp" alt="Logo"/></div>
                 </div>
                 <a className="btn btn-ghost text-xl">{t('components.navbar.name')}</a>
             </div>

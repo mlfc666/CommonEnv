@@ -11,14 +11,14 @@ export default defineConfig({
     server: {
         // 允许指定的 Host 访问
         allowedHosts: ['dev.mlfc.moe', 'localhost'],
-        proxy: {
-            // 当你访问 /api 时，Vite 会自动转发到 8080
-            '/api': {
-                target: 'http://localhost:8080',
-                changeOrigin: true,
-                // 如果后端没有 /api 前缀，可以重写路径，但你的后端看起来是有 /api 的，所以不需要 rewrite
-            }
-        }
+        // proxy: {
+        //     // 当你访问 /api 时，Vite 会自动转发到 8080
+        //     '/api': {
+        //         target: 'http://localhost:8080',
+        //         changeOrigin: true,
+        //         // 如果后端没有 /api 前缀，可以重写路径，但你的后端看起来是有 /api 的，所以不需要 rewrite
+        //     }
+        // }
     },
     base: './',
     build: {
