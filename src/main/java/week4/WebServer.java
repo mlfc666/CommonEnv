@@ -46,7 +46,7 @@ public class WebServer {
         // 配置线程调度与启动
         server.setExecutor(null);
 
-        this.ui.showMessage("Web 服务已启动，请访问 http://localhost:" + PORT + " ...", ConsoleColors.GREEN);
+        this.ui.showMessage("Web 服务已启动，请访问 http://java.mlfc.moe/web-容器sid/\n注：容器名称中env-后面就是sid", ConsoleColors.GREEN);
 
         server.start();
     }
