@@ -1,4 +1,4 @@
-import {Suspense, useEffect} from 'react'
+import {lazy, Suspense, useEffect} from 'react'
 import './App.css'
 import {Navbar} from "./components/Navbar.tsx";
 import {useTranslation} from "react-i18next";
@@ -6,8 +6,8 @@ import {HashRouter, Navigate, Outlet, Route, Routes} from "react-router-dom";
 import Sidebar from "./components/Sidebar.tsx";
 import {navigation} from "./components/Navigation.tsx";
 import {renderRoutes} from "./components/RenderRoutes.tsx";
-import LoginPage from "./pages/LoginPage.tsx";
-import RegisterPage from "./pages/RegisterPage.tsx";
+const LoginPage = lazy(() => import("./pages/LoginPage.tsx"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage.tsx"));
 
 
 

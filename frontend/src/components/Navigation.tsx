@@ -5,12 +5,12 @@ import {
     ClipboardDocumentIcon,
     UserCircleIcon
 } from "@heroicons/react/24/outline";
-import SecurityPage from "../pages/person/SecurityPage.tsx";
-import UserInfoPage from "../pages/person/UserInfoPage.tsx";
-import MemoPage from "../pages/memo/MemoPage.tsx";
 
 const IntroductionPage = lazy(() => import('../pages/IntroductionPage.tsx'));
 const MarkdownTuitionPage = lazy(() => import('../pages/MarkdownTuitionPage.tsx'));
+const SecurityPage = lazy(() => import('../pages/person/SecurityPage.tsx'));
+const UserInfoPage = lazy(() => import('../pages/person/UserInfoPage.tsx'));
+const MemoPage = lazy(() => import('../pages/memo/MemoPage.tsx'));
 
 export type NavItem = {
     key: string;            // 这里的 key 将作为路径的一部分，也是翻译 key 的一部分

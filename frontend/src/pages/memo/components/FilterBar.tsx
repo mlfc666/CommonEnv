@@ -5,9 +5,10 @@ import {memoService} from "../../../services/memoService.ts";
 
 interface FilterBarProps {
     onSearch: (keyword: string, tags: string[], days?: number) => void;
+    refreshKey: number; // 接收外部刷新触发器
 }
 
-export const FilterBar: React.FC<FilterBarProps> = ({onSearch}) => {
+export const FilterBar: React.FC<FilterBarProps> = ({onSearch, refreshKey}) => {
     const {t} = useTranslation();
     const [availableTags, setAvailableTags] = useState<string[]>([]);
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -30,7 +31,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({onSearch}) => {
         return () => {
             isMounted = false;
         };
-    }, [t]);
+    }, [t, refreshKey]);
 
     return (
         <div

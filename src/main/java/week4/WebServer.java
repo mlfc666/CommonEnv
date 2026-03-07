@@ -17,7 +17,6 @@ import week4.framework.core.BeanContainer;
 import week4.framework.core.DispatcherHandler;
 import week4.framework.core.RouteScanner;
 import week4.handlers.MasterHandler;
-import week4.handlers.StaticHandler;
 
 import java.net.InetSocketAddress;
 
@@ -34,7 +33,7 @@ public class WebServer {
         // 初始化业务层组件 (Repository & Service)
         UserRepository userRepo = new UserRepositoryImpl();
         MemoRepository memoRepo = new MemoRepositoryImpl();
-        UserService userService = new UserServiceImpl(userRepo);
+        UserService userService = new UserServiceImpl(userRepo, memoRepo);
         MemoService memoService = new MemoServiceImpl(memoRepo);
 
         // 注册到 Bean 容器，供框架注入

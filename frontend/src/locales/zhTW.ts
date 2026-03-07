@@ -67,7 +67,8 @@ const lang: LanguageInfo = {
                 userid: "用戶 ID",
                 created_at: "註冊時間",
                 save: "保存修改",
-                success: "資料修改成功"
+                success: "資料修改成功",
+                invalid_length: "用戶名長度必須在 3 到 16 個字符之間",
             }
         },
         security: {
@@ -79,7 +80,8 @@ const lang: LanguageInfo = {
                 confirm_label: "確認新密碼",
                 submit: "保存密碼",
                 mismatch: "兩次輸入的新密碼不一致",
-                success: "密碼修改成功"
+                success: "密碼修改成功",
+                invalid_length: "密碼長度必須在 6 到 20 個字符之間",
             },
             danger: {
                 title: "註銷賬號",

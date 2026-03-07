@@ -31,17 +31,17 @@ public class MemoRepositoryImpl implements MemoRepository {
     }
 
     @Override
-    public void deleteById(Integer id, Integer userId) {
+    public int deleteById(Integer id, Integer userId) {
         String sql = "DELETE FROM memos WHERE id = ? AND user_id = ?";
-        DBExecutor.executeUpdate("删除备忘录ID:" + id, sql, id, userId);
+        return DBExecutor.executeUpdate("删除备忘录ID:" + id, sql, id, userId);
     }
 
     @Override
-    public void update(Memo memo, Integer userId) {
+    public int update(Memo memo, Integer userId) {
         String sql = "UPDATE memos SET title = ?, content = ?, tags = ? WHERE id = ? AND user_id = ?";
         String tagsStr = memo.getTags() != null ? String.join(",", memo.getTags()) : "";
 
-        DBExecutor.executeUpdate(
+        return DBExecutor.executeUpdate(
                 "更新备忘录ID:" + memo.getId(),
                 sql,
                 memo.getTitle(),
@@ -104,6 +104,35 @@ public class MemoRepositoryImpl implements MemoRepository {
                 this::mapRowToMemo,
                 params.toArray()
         );
+    }
+
+    @Override
+    public int countByUserId(Integer userId) {
+        String sql = "SELECT COUNT(*) FROM memos WHERE user_id = ?";
+        List<Integer> results = DBExecutor.executeQuery(
+                "统计用户备忘录总数",
+                sql,
+                rs -> rs.getInt(1),
+                userId
+        );
+        return results.isEmpty() ? 0 : results.get(0);
+    }
+
+    @Override
+    public List<String> findTagsByUserId(Integer userId) {
+        String sql = "SELECT tags FROM memos WHERE user_id = ?";
+        return DBExecutor.executeQuery(
+                "查询用户原始标签列表",
+                sql,
+                rs -> rs.getString("tags"),
+                userId
+        );
+    }
+
+    @Override
+    public int deleteByUserId(Integer userId) {
+        String sql = "DELETE FROM memos WHERE user_id = ?";
+        return DBExecutor.executeUpdate("清理注销用户的备忘录记录", sql, userId);
     }
 
     // 将数据库结果集映射为实体对象

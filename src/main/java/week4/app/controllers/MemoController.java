@@ -1,5 +1,6 @@
 package week4.app.controllers;
 
+import week4.app.dto.MemoInfoDTO;
 import week4.app.dto.MemoQueryDTO;
 import week4.app.models.Memo;
 import week4.app.services.MemoService;
@@ -17,7 +18,8 @@ public class MemoController {
 
     /**
      * 添加备忘录
-     * @param memo 包含标题、内容、标签等信息
+     *
+     * @param memo   包含标题、内容、标签等信息
      * @param userId 自动从 Token 中提取当前登录用户 ID
      */
     @PostMapping("/api/memo/create")
@@ -28,6 +30,7 @@ public class MemoController {
 
     /**
      * 更新备忘录
+     *
      * @param memo 必须包含 ID 字段
      */
     @PostMapping("/api/memo/update")
@@ -38,6 +41,7 @@ public class MemoController {
 
     /**
      * 删除备忘录
+     *
      * @param id 备忘录的主键 ID
      */
     @PostMapping("/api/memo/delete")
@@ -48,11 +52,22 @@ public class MemoController {
 
     /**
      * 获取备忘录列表
+     *
      * @param query 组合查询 DTO，支持关键字搜索、标签筛选、时间筛选及分页
      */
     @PostMapping("/api/memo/list") // 改为 POST 以支持复杂的 MemoQueryDTO 查询对象
     public List<Memo> list(@RequestBody MemoQueryDTO query, @AuthClaim("uid") Integer userId) {
         // 仅查询属于当前用户的数据
         return memoService.getMemos(query, userId);
+    }
+
+    /**
+     * 获取全部标签和总数
+     * @param userId
+     * @return
+     */
+    @GetMapping("/api/memo/info")
+    public MemoInfoDTO info(@AuthClaim("uid") Integer userId) {
+        return memoService.getMemoInfo(userId);
     }
 }

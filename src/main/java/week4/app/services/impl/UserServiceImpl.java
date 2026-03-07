@@ -2,8 +2,10 @@ package week4.app.services.impl;
 
 import org.jspecify.annotations.NonNull;
 import week4.app.dto.LoginDTO;
+import week4.app.dto.PasswordUpdateDTO;
 import week4.app.dto.UserInfoDTO;
 import week4.app.models.User;
+import week4.app.repository.MemoRepository;
 import week4.app.repository.UserRepository;
 import week4.app.services.UserService;
 import week4.app.utils.PasswordUtils;
@@ -19,9 +21,11 @@ import java.util.Map;
 
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final MemoRepository memoRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, MemoRepository memoRepository) {
         this.userRepository = userRepository;
+        this.memoRepository = memoRepository;
     }
 
     @Override
@@ -134,5 +138,58 @@ public class UserServiceImpl implements UserService {
         Long logoutTime = userRepository.getLogoutTime(userId);
         // 如果从未登出，或者 Token 签发时间（秒）晚于最后登出时间（毫秒转秒）
         return logoutTime == null || iat >= (logoutTime / 1000);
+    }
+
+    @Override
+    public String updatePassword(PasswordUpdateDTO dto, Integer userId) {
+        // 首先根据唯一标识符检索账户的最新状态
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("找不到指定的账户信息"));
+
+        // 比对前端传输的旧密码哈希值是否与库中密文一致
+        if (!PasswordUtils.verify(dto.oldPassword(), user.getPassword())) {
+            throw new UnauthorizedException("旧密码验证不通过");
+        }
+
+        // 执行更新操作并根据受影响行数判断执行结果
+        int rows = userRepository.updatePassword(userId, PasswordUtils.hash(dto.newPassword()));
+        if (rows == 0) {
+            throw new InternalErrorException("服务器未能同步密码更改");
+        }
+        return "密码已修改";
+    }
+
+    @Override
+    public String updateUsername(String username, Integer userId) {
+        // 验证新名称长度
+        if (username.length() < 3 || username.length() > 16) {
+            throw new BadRequestException("用户名长度必须在 3 到 16 个字符之间");
+        }
+        // 排除自身后检查新名称是否与其他活跃账户冲突
+        userRepository.findByUsername(username).ifPresent(u -> {
+            if (!u.getId().equals(userId)) {
+                throw new ConflictException("该名称已被其他用户占用");
+            }
+        });
+
+        // 执行更名操作并校验数据库反馈的受影响行数
+        int rows = userRepository.updateUsername(userId, username);
+        if (rows == 0) {
+            throw new InternalErrorException("服务器未能同步用户名更改");
+        }
+        return "用户名已更新";
+    }
+
+    @Override
+    public String deleteAccount(Integer userId) {
+        // 级联清理该用户在系统中产生的所有业务备忘录数据
+        memoRepository.deleteByUserId(userId);
+
+        // 执行账户注销并校验受影响行数确保删除成功
+        int rows = userRepository.deleteById(userId);
+        if (rows == 0) {
+            throw new NotFoundException("注销失败账户可能已不存在");
+        }
+        return "账户注销成功";
     }
 }

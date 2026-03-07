@@ -67,7 +67,8 @@ const lang: LanguageInfo = {
                 userid: "User ID",
                 created_at: "Joined At",
                 save: "Save Changes",
-                success: "Profile updated successfully"
+                success: "Profile updated successfully",
+                invalid_length: "Username length must be between 3 and 16 characters",
             }
         },
         security: {
@@ -79,7 +80,8 @@ const lang: LanguageInfo = {
                 confirm_label: "Confirm New Password",
                 submit: "Update Password",
                 mismatch: "The new passwords do not match",
-                success: "Password updated successfully"
+                success: "Password updated successfully",
+                invalid_length: "Password length must be between 6 and 20 characters",
             },
             danger: {
                 title: "Delete Account",

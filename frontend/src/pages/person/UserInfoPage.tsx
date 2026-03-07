@@ -1,13 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { IdentificationIcon, CalendarDaysIcon, UserIcon, FingerPrintIcon, UserCircleIcon } from "@heroicons/react/24/outline";
-import { userService } from "../../services/userService.ts";
-import type { UserInfoDTO } from "../../types/UserInfoDTO.ts";
+import React, {useState, useEffect} from "react";
+import {useTranslation} from "react-i18next";
+import {useNavigate} from "react-router-dom";
+import {
+    IdentificationIcon,
+    CalendarDaysIcon,
+    UserIcon,
+    FingerPrintIcon,
+    UserCircleIcon
+} from "@heroicons/react/24/outline";
+import {userService} from "../../services/userService.ts";
+import type {UserInfoDTO} from "../../types/UserInfoDTO.ts";
 
-// 头像预览组件根据数据状态决定显示图形图标或真实图片
-const AvatarCard: React.FC<{ avatar: string | null; username: string; id: number; onUpload: (file: File) => void }> = ({ avatar, username, id, onUpload }) => {
-    const { t } = useTranslation();
+const AvatarCard: React.FC<{
+    avatar: string | null;
+    username: string;
+    id: number;
+    onUpload: (file: File) => void
+}> = ({avatar, username, id, onUpload}) => {
+    const {t} = useTranslation();
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) onUpload(e.target.files[0]);
     };
@@ -15,41 +25,66 @@ const AvatarCard: React.FC<{ avatar: string | null; username: string; id: number
         <div className="card bg-base-100 border border-base-300 rounded-lg shadow-none text-base-content">
             <div className="card-body items-center text-center p-10">
                 <div className="avatar mb-6">
-                    <div className="w-36 h-36 rounded-full ring-2 ring-base-200 ring-offset-4 ring-offset-base-100 flex items-center justify-center bg-base-100 overflow-hidden">
-                        {avatar ? (
-                            <img src={avatar} alt="Avatar" className="w-full h-full object-cover" />
-                        ) : (
-                            <UserCircleIcon className="w-24 h-24 opacity-20" />
-                        )}
+                    <div
+                        className="w-36 h-36 rounded-full ring-2 ring-base-200 ring-offset-4 ring-offset-base-100 flex items-center justify-center bg-base-100 overflow-hidden">
+                        {avatar ? <img src={avatar} alt="Avatar" className="w-full h-full object-cover"/> :
+                            <UserCircleIcon className="w-24 h-24 opacity-20"/>}
                     </div>
                 </div>
                 <h2 className="text-2xl font-bold tracking-tight">{username}</h2>
                 <p className="opacity-40 text-sm font-mono mt-1 uppercase tracking-widest">{t('person.info.avatar.uid_prefix')}: {id}</p>
                 <div className="w-full mt-10">
-                    <input type="file" id="avatar-upload" className="hidden" onChange={handleFileChange} accept="image/*" />
-                    <label htmlFor="avatar-upload" className="btn btn-outline border-base-300 btn-block h-12 font-bold hover:bg-base-200 cursor-pointer text-base-content uppercase">
-                        {t('person.info.avatar.change')}
-                    </label>
+                    <input type="file" id="avatar-upload" className="hidden" onChange={handleFileChange}
+                           accept="image/*"/>
+                    <label htmlFor="avatar-upload"
+                           className="btn btn-outline border-base-300 btn-block h-12 font-bold hover:bg-base-200 cursor-pointer text-base-content uppercase">{t('person.info.avatar.change')}</label>
                 </div>
             </div>
         </div>
     );
 };
 
-const InfoForm: React.FC<{ user: UserInfoDTO; onUpdate: (name: string) => void }> = ({ user, onUpdate }) => {
-    const { t } = useTranslation();
+const InfoForm: React.FC<{ user: UserInfoDTO; onUpdate: (name: string) => void }> = ({user, onUpdate}) => {
+    const {t} = useTranslation();
     const [editName, setEditName] = useState<string>(user.username);
     return (
         <div className="lg:col-span-2 card bg-base-100 border border-base-300 rounded-lg shadow-none text-base-content">
             <div className="card-body gap-8 p-10">
-                <div className="flex items-center gap-4 border-b border-base-200 pb-6"><div className="p-3 bg-base-200 rounded-lg"><IdentificationIcon className="w-6 h-6" /></div>
-                    <div><h2 className="text-xl font-bold">{t('person.info.form.title')}</h2><p className="text-sm opacity-50">{t('person.info.form.subtitle')}</p></div></div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <fieldset className="fieldset"><legend className="fieldset-legend font-bold text-xs uppercase tracking-wider opacity-60">{t('person.info.form.username')}</legend><label className="input input-bordered flex items-center gap-3 h-12 rounded-lg"><UserIcon className="w-5 h-5 opacity-40" /><input type="text" value={editName} onChange={e => setEditName(e.target.value)} className="grow text-base" /></label></fieldset>
-                    <fieldset className="fieldset"><legend className="fieldset-legend font-bold text-xs uppercase tracking-wider opacity-60">{t('person.info.form.userid')}</legend><label className="input input-bordered flex items-center gap-3 h-12 rounded-lg bg-base-200 cursor-not-allowed"><FingerPrintIcon className="w-5 h-5 opacity-40" /><input type="text" value={user.id} className="grow text-base" readOnly /></label></fieldset>
-                    <fieldset className="fieldset col-span-full"><legend className="fieldset-legend font-bold text-xs uppercase tracking-wider opacity-60">{t('person.info.form.created_at')}</legend><label className="input input-bordered flex items-center gap-3 h-12 rounded-lg bg-base-200 cursor-not-allowed"><CalendarDaysIcon className="w-5 h-5 opacity-40" /><input type="text" value={new Date(user.createTime).toLocaleDateString()} className="grow text-base" readOnly /></label></fieldset>
+                <div className="flex items-center gap-4 border-b border-base-200 pb-6">
+                    <div className="p-3 bg-base-200 rounded-lg"><IdentificationIcon className="w-6 h-6"/></div>
+                    <div><h2 className="text-xl font-bold">{t('person.info.form.title')}</h2><p
+                        className="text-sm opacity-50">{t('person.info.form.subtitle')}</p></div>
                 </div>
-                <div className="card-actions justify-end mt-4"><button onClick={() => onUpdate(editName)} className="btn bg-base-content text-base-100 px-10 h-12 rounded-lg text-base font-bold shadow-lg shadow-base-content/10 hover:bg-black transition-all border-none">{t('person.info.form.save')}</button></div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <fieldset className="fieldset">
+                        <legend
+                            className="fieldset-legend font-bold text-xs uppercase tracking-wider opacity-60">{t('person.info.form.username')}</legend>
+                        <label className="input input-bordered flex items-center gap-3 h-12 rounded-lg"><UserIcon
+                            className="w-5 h-5 opacity-40"/><input type="text" value={editName}
+                                                                   onChange={e => setEditName(e.target.value)}
+                                                                   className="grow text-base"/></label></fieldset>
+                    <fieldset className="fieldset">
+                        <legend
+                            className="fieldset-legend font-bold text-xs uppercase tracking-wider opacity-60">{t('person.info.form.userid')}</legend>
+                        <label
+                            className="input input-bordered flex items-center gap-3 h-12 rounded-lg bg-base-200 cursor-not-allowed"><FingerPrintIcon
+                            className="w-5 h-5 opacity-40"/><input type="text" value={user.id}
+                                                                   className="grow text-base" readOnly/></label>
+                    </fieldset>
+                    <fieldset className="fieldset col-span-full">
+                        <legend
+                            className="fieldset-legend font-bold text-xs uppercase tracking-wider opacity-60">{t('person.info.form.created_at')}</legend>
+                        <label
+                            className="input input-bordered flex items-center gap-3 h-12 rounded-lg bg-base-200 cursor-not-allowed"><CalendarDaysIcon
+                            className="w-5 h-5 opacity-40"/><input type="text"
+                                                                   value={new Date(user.createTime).toLocaleDateString()}
+                                                                   className="grow text-base" readOnly/></label>
+                    </fieldset>
+                </div>
+                <div className="card-actions justify-end mt-4">
+                    <button onClick={() => onUpdate(editName)}
+                            className="btn bg-base-content text-base-100 px-10 h-12 rounded-lg text-base font-bold hover:bg-black transition-all border-none">{t('person.info.form.save')}</button>
+                </div>
             </div>
         </div>
     );
@@ -57,36 +92,64 @@ const InfoForm: React.FC<{ user: UserInfoDTO; onUpdate: (name: string) => void }
 
 export default function UserInfoPage() {
     const navigate = useNavigate();
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const [user, setUser] = useState<UserInfoDTO | null>(null);
+
     useEffect(() => {
         let isMounted = true;
-        const loadData = async () => {
+        const loadInitialData = async () => {
             try {
                 const res = await userService.getUserInfo();
-                if (isMounted) { if (res.code === 200) setUser(res.data); else navigate("/login"); }
-            } catch { if (isMounted) navigate("/login"); }
+                if (isMounted) {
+                    if (res.code === 200) setUser(res.data);
+                    else navigate("/login");
+                }
+            } catch (error) {
+                console.error(t('common.error_network') + error);
+                if (isMounted) navigate("/login");
+            }
         };
-        void loadData();
-        return () => { isMounted = false; };
-    }, [navigate]);
+        void loadInitialData();
+        return () => {
+            isMounted = false;
+        };
+    }, [navigate, t]);
+
     const onAvatarUpload = async (file: File) => {
         try {
             const res = await userService.uploadAvatar(file);
-            if (res.code === 200 && user) setUser({ ...user, avatar: res.data });
-        } catch { console.error(t('common.error_network')); }
+            if (res.code === 200 && user) setUser({...user, avatar: res.data});
+        } catch (error) {
+            console.error(t('common.error_network') + error);
+        }
     };
+
     const onUpdateUsername = async (name: string) => {
+        // 执行前端长度校验逻辑以匹配后端规范
+        if (name.length < 3 || name.length > 16) {
+            alert(t('person.info.form.invalid_length'));
+            return;
+        }
         try {
             const res = await userService.updateUsername(name);
-            if (res.code === 200 && user) { setUser({ ...user, username: name }); alert(t('person.info.form.success')); }
-        } catch { console.error(t('common.error_network')); }
+            if (res.code === 200 && user) {
+                setUser({...user, username: name});
+                alert(t('person.info.form.success'));
+            } else {
+                alert(res.message);
+            }
+        } catch (error) {
+            console.error(t('common.error_network') + error);
+        }
     };
-    if (!user) return <div className="flex h-64 items-center justify-center text-base-content"><span className="loading loading-spinner loading-lg"></span></div>;
+
+    if (!user) return <div className="flex h-64 items-center justify-center text-base-content"><span
+        className="loading loading-spinner loading-lg"></span></div>;
+
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <AvatarCard avatar={user.avatar} username={user.username} id={user.id} onUpload={onAvatarUpload} />
-            <InfoForm key={user.username} user={user} onUpdate={onUpdateUsername} />
+            <AvatarCard avatar={user.avatar} username={user.username} id={user.id} onUpload={onAvatarUpload}/>
+            <InfoForm key={user.username} user={user} onUpdate={onUpdateUsername}/>
         </div>
     );
 }

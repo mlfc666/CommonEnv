@@ -1,6 +1,7 @@
 package week4.app.services;
 
 import week4.app.dto.LoginDTO;
+import week4.app.dto.PasswordUpdateDTO;
 import week4.app.dto.UserInfoDTO;
 import week4.framework.models.MultipartFile;
 
@@ -21,4 +22,10 @@ public interface UserService {
 
     // 校验 Token 的签发时间是否早于最后登出时间
     boolean isTokenValid(Integer userId, Long iat);
+
+    String updatePassword(PasswordUpdateDTO passwordUpdateDTO, Integer userId);
+
+    String updateUsername(String username, Integer userId);
+
+    String deleteAccount(Integer userId);
 }

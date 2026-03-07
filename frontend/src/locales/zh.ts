@@ -65,7 +65,8 @@ const lang = {
                 userid: "用户 ID",
                 created_at: "注册时间",
                 save: "保存修改",
-                success: "资料修改成功"
+                success: "资料修改成功",
+                invalid_length: "用户名长度必须在 3 到 16 个字符之间",
             }
         },
         security: {
@@ -77,7 +78,8 @@ const lang = {
                 confirm_label: "确认新密码",
                 submit: "保存密码",
                 mismatch: "两次输入的新密码不一致",
-                success: "密码修改成功"
+                success: "密码修改成功",
+                invalid_length: "密码长度必须在 6 到 20 个字符之间",
             },
             danger: {
                 title: "注销账号",

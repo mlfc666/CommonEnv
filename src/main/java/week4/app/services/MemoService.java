@@ -1,5 +1,6 @@
 package week4.app.services;
 
+import week4.app.dto.MemoInfoDTO;
 import week4.app.models.Memo;
 import week4.app.dto.MemoQueryDTO;
 import java.util.List;
@@ -16,4 +17,6 @@ public interface MemoService {
 
     // 执行组合条件过滤的分页查询
     List<Memo> getMemos(MemoQueryDTO query, Integer userId);
+
+    MemoInfoDTO getMemoInfo(Integer userId);
 }

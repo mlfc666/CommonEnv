@@ -50,15 +50,15 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void updateAvatar(Integer userId, String avatarUrl) {
+    public int updateAvatar(Integer userId, String avatarUrl) {
         String sql = "UPDATE users SET avatar = ? WHERE id = ?";
-        DBExecutor.executeUpdate("更新用户头像 ID: " + userId, sql, avatarUrl, userId);
+        return DBExecutor.executeUpdate("更新用户头像 ID: " + userId, sql, avatarUrl, userId);
     }
 
     @Override
-    public void updateLastLogoutTime(Integer userId, Long timestamp) {
+    public int updateLastLogoutTime(Integer userId, Long timestamp) {
         String sql = "UPDATE users SET logout_time = ? WHERE id = ?";
-        DBExecutor.executeUpdate("更新用户最后登出时间 ID: " + userId, sql, timestamp, userId);
+        return DBExecutor.executeUpdate("更新用户最后登出时间 ID: " + userId, sql, timestamp, userId);
     }
 
     @Override
@@ -74,6 +74,23 @@ public class UserRepositoryImpl implements UserRepository {
         return results.isEmpty() ? 0L : results.get(0);
     }
 
+    @Override
+    public int updatePassword(Integer userId, String hashedPassword) {
+        String sql = "UPDATE users SET password = ? WHERE id = ?";
+        return DBExecutor.executeUpdate("执行数据库密码字段同步任务", sql, hashedPassword, userId);
+    }
+
+    @Override
+    public int updateUsername(Integer userId, String username) {
+        String sql = "UPDATE users SET username = ? WHERE id = ?";
+        return DBExecutor.executeUpdate("执行数据库用户名字段同步任务", sql, username, userId);
+    }
+
+    @Override
+    public int deleteById(Integer userId) {
+        String sql = "DELETE FROM users WHERE id = ?";
+        return DBExecutor.executeUpdate("执行数据库账户记录物理删除任务", sql, userId);
+    }
     /**
      * 将数据库结果集映射为 User 实体对象
      */
