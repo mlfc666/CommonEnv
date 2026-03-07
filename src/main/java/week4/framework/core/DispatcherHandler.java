@@ -34,6 +34,7 @@ public class DispatcherHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        System.out.println("[DEBUG] 容器收到的路径访问: " + exchange.getRequestURI().getPath());
         try {
             // 路径剥离
             String path = exchange.getRequestURI().getPath();
