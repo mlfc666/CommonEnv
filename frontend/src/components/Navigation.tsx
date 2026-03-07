@@ -1,5 +1,10 @@
 import React, {lazy} from 'react';
-import {AcademicCapIcon, AtSymbolIcon, WrenchScrewdriverIcon} from "@heroicons/react/24/outline";
+import {
+    AcademicCapIcon,
+    AtSymbolIcon,
+    ClipboardDocumentIcon,
+    UserCircleIcon
+} from "@heroicons/react/24/outline";
 
 const IntroductionPage = lazy(() => import('../pages/IntroductionPage.tsx'));
 const MarkdownTuitionPage = lazy(() => import('../pages/MarkdownTuitionPage.tsx'));
@@ -18,24 +23,33 @@ export type NavItem = {
 
 export const navigation: NavItem[] = [
     {
-        key: 'tool',
-        icon:<WrenchScrewdriverIcon className="w-5 h-5"/>,
-        element: <MarkdownTuitionPage/>,
-        children: [
-            {
-                key: 'tweet',
-                element: <MarkdownTuitionPage/>,
-            },
-        ],
-    },
-    {
         key: 'website',
         icon: <AtSymbolIcon className="w-5 h-5"/>,
+        element: <IntroductionPage/>,
+    },
+    {
+        key: 'memo',
+        icon: <ClipboardDocumentIcon className="w-5 h-5"/>,
         element: <IntroductionPage/>,
     },
     {
         key: 'md',
         icon: <AcademicCapIcon className="w-5 h-5"/>,
         element: <MarkdownTuitionPage/>
+    },
+    {
+        key: 'person',
+        icon:<UserCircleIcon className="w-5 h-5"/>,
+        element: <MarkdownTuitionPage/>,
+        children: [
+            {
+                key: 'info',
+                element: <MarkdownTuitionPage/>,
+            },
+            {
+                key: 'security',
+                element: <MarkdownTuitionPage/>,
+            },
+        ],
     },
 ];

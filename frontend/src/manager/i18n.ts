@@ -12,9 +12,7 @@ export interface LanguageInfo {
 }
 
 export const languageOptions: LanguageInfo[] = [
-    {label: "English", language: "en"},
     {label: "简体中文", language: "zh"},
-    {label: "繁體中文", language: "zh-TW"},
 ];
 
 const resources = {

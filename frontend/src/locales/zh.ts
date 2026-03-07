@@ -18,7 +18,14 @@ const lang = {
     },
     sidebar: {
         website: "网站介绍",
-        md: "编写Markdown"
+        memo: "备忘录",
+        md: "编写Markdown",
+        person:{
+            main:"用户相关",
+            info: "个人信息",
+            security: "安全设置",
+        }
+
     },
     language: "简体中文",
     loading: "加载中..."
