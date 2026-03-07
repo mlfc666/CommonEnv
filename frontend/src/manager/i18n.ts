@@ -4,7 +4,8 @@ import {initReactI18next} from 'react-i18next';
 import Backend from 'i18next-http-backend'; // 加载翻译文件
 import LanguageDetector from 'i18next-browser-languagedetector'; // 检测浏览器语言
 import zh from "../locales/zh.ts";
-
+import zhTW from "../locales/zhTW.ts";
+import en from "../locales/en.ts";
 // 主题列表接口
 export interface LanguageInfo {
     label: string;
@@ -13,12 +14,21 @@ export interface LanguageInfo {
 
 export const languageOptions: LanguageInfo[] = [
     {label: "简体中文", language: "zh"},
+    {label: "English", language: "en"},
+    {label: "繁體中文", language: "zhTW"},
 ];
 
 const resources = {
     zh: {
         translation: zh,
+    },
+    en: {
+        translation: en,
+    },
+    zhTW: {
+        translation: zhTW,
     }
+
 };
 
 // 初始化i18n
