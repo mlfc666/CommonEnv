@@ -14,6 +14,16 @@ import java.util.Optional;
 public class MemoRepositoryImpl implements MemoRepository {
 
     @Override
+    public List<Memo> findAll() {
+        String sql = "SELECT * FROM memos";
+        return DBExecutor.executeQuery(
+                "获取全量备忘录数据",
+                sql,
+                this::mapRowToMemo
+        );
+    }
+
+    @Override
     public Integer create(Memo memo) {
         String sql = "INSERT INTO memos (title, content, tags, create_time, user_id) VALUES (?, ?, ?, ?, ?)";
         // 将标签数组转换为逗号分隔的字符串存储

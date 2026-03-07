@@ -17,6 +17,7 @@ import week4.framework.utils.JwtUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 public class UserServiceImpl implements UserService {
@@ -26,6 +27,11 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository, MemoRepository memoRepository) {
         this.userRepository = userRepository;
         this.memoRepository = memoRepository;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
     @Override

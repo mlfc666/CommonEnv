@@ -10,6 +10,15 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserRepositoryImpl implements UserRepository {
+    @Override
+    public List<User> findAll() {
+        String sql = "SELECT id, username, password, avatar, logout_time, create_time FROM users";
+        return DBExecutor.executeQuery(
+                "获取全量用户数据",
+                sql,
+                this::mapRowToUser
+        );
+    }
 
     @Override
     public Integer save(User user) {
@@ -91,6 +100,7 @@ public class UserRepositoryImpl implements UserRepository {
         String sql = "DELETE FROM users WHERE id = ?";
         return DBExecutor.executeUpdate("执行数据库账户记录物理删除任务", sql, userId);
     }
+
     /**
      * 将数据库结果集映射为 User 实体对象
      */

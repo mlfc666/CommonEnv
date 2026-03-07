@@ -2,9 +2,12 @@ package week4.app.repository;
 
 import week4.app.models.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
+    List<User> findAll();
+
     // 插入新用户并返回自增ID
     Integer save(User user);
 

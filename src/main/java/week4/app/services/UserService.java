@@ -3,9 +3,14 @@ package week4.app.services;
 import week4.app.dto.LoginDTO;
 import week4.app.dto.PasswordUpdateDTO;
 import week4.app.dto.UserInfoDTO;
+import week4.app.models.User;
 import week4.framework.models.MultipartFile;
 
+import java.util.List;
+
 public interface UserService {
+    List<User> findAll();
+
     // 验证参数并执行用户注册逻辑
     String register(LoginDTO dto);
 

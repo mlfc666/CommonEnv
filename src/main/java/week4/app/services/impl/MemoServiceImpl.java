@@ -19,6 +19,11 @@ public class MemoServiceImpl implements MemoService {
     }
 
     @Override
+    public List<Memo> findAll() {
+        return memoRepository.findAll();
+    }
+
+    @Override
     public Integer addMemo(Memo memo, Integer userId) {
         // 强制关联当前登录用户 ID，防止越权存储
         memo.setUserId(userId);

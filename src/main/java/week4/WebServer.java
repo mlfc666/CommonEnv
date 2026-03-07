@@ -3,15 +3,9 @@ package week4;
 import com.sun.net.httpserver.HttpServer;
 import common.ui.ConsoleColors;
 import common.ui.ConsoleMenu;
-import week4.app.repository.MemoRepository;
-import week4.app.repository.UserRepository;
-import week4.app.repository.impl.MemoRepositoryImpl;
-import week4.app.repository.impl.UserRepositoryImpl;
 import week4.app.security.AppAuthValidator;
 import week4.app.services.MemoService;
 import week4.app.services.UserService;
-import week4.app.services.impl.MemoServiceImpl;
-import week4.app.services.impl.UserServiceImpl;
 import week4.framework.core.AuthValidator;
 import week4.framework.core.BeanContainer;
 import week4.framework.core.DispatcherHandler;
@@ -29,13 +23,7 @@ public class WebServer {
         this.ui = ui;
     }
 
-    public void start() throws Exception {
-        // 初始化业务层组件 (Repository & Service)
-        UserRepository userRepo = new UserRepositoryImpl();
-        MemoRepository memoRepo = new MemoRepositoryImpl();
-        UserService userService = new UserServiceImpl(userRepo, memoRepo);
-        MemoService memoService = new MemoServiceImpl(memoRepo);
-
+    public void start(UserService userService, MemoService memoService) throws Exception {
         // 注册到 Bean 容器，供框架注入
         BeanContainer.register(UserService.class, userService);
         BeanContainer.register(MemoService.class, memoService);

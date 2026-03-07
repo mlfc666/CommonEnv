@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MemoRepository {
+    List<Memo> findAll();
+
     // 持久化单条备忘录数据
     Integer create(Memo memo);
 

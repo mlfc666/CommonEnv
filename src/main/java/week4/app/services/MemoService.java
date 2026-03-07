@@ -6,6 +6,8 @@ import week4.app.dto.MemoQueryDTO;
 import java.util.List;
 
 public interface MemoService {
+    List<Memo> findAll();
+
     // 添加新的备忘录并记录创建时间
     Integer addMemo(Memo memo, Integer userId);
 
