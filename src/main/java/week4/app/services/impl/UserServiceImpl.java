@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // 更新数据库记录
-        String newUrl = "/uploads/" + fileName;
+        String newUrl = "./uploads/" + fileName;
         userRepository.updateAvatar(userId, newUrl);
 
         return newUrl;
