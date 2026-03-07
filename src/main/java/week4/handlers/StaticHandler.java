@@ -10,6 +10,15 @@ public class StaticHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         // 获取并剥离路径前缀
         String path = exchange.getRequestURI().getPath();
+
+        // 如果请求是以 /api 开头的，StaticHandler 必须拒绝处理，
+        // 因为 /api 应该由 DispatcherHandler 处理。
+        if (path.startsWith("/api") || (path.startsWith("/web-") && path.contains("/api"))) {
+            sendError(exchange, 404, "API should be handled by DispatcherHandler");
+            return;
+        }
+
+
         if (path.startsWith("/web-")) path = path.replaceFirst("^/web-[^/]+", "");
         if (path.equals("/") || path.isEmpty()) path = "/index.html";
 
