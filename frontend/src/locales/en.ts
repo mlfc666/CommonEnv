@@ -1,4 +1,4 @@
-import type {LanguageInfo} from "./zh";
+import type {LanguageInfo} from "./zh.ts";
 
 const lang: LanguageInfo = {
     components: {
@@ -33,7 +33,7 @@ const lang: LanguageInfo = {
             title: "Create Account",
             subtitle: "Join us and start recording your ideas",
             username_label: "Username",
-            username_placeholder: "Choose a username",
+            username_placeholder: "Enter username",
             password_label: "Password",
             password_placeholder: "••••••••",
             submit: "Register",
@@ -66,7 +66,8 @@ const lang: LanguageInfo = {
                 username: "Username",
                 userid: "User ID",
                 created_at: "Joined At",
-                save: "Save Changes"
+                save: "Save Changes",
+                success: "Profile updated successfully"
             }
         },
         security: {
@@ -76,13 +77,16 @@ const lang: LanguageInfo = {
                 old_label: "Current Password",
                 new_label: "New Password",
                 confirm_label: "Confirm New Password",
-                submit: "Update Password"
+                submit: "Update Password",
+                mismatch: "The new passwords do not match",
+                success: "Password updated successfully"
             },
             danger: {
                 title: "Delete Account",
                 subtitle: "Irreversible action, please proceed with caution",
                 description: "Once deleted, all associated data (memos, avatars, etc.) will be permanently removed from the server and cannot be recovered.",
-                submit: "Delete Account Permanently"
+                submit: "Delete Account Permanently",
+                confirm: "Are you sure you want to permanently delete your account? This action cannot be undone."
             },
             aside: {
                 title: "Security Tips",
@@ -91,8 +95,47 @@ const lang: LanguageInfo = {
             }
         }
     },
+    memo: {
+        filter: {
+            search_placeholder: "Search keywords...",
+            all_tags: "All Tags",
+            all_time: "All Time",
+            days_3: "Last 3 days",
+            days_7: "Last 7 days",
+            submit: "Search"
+        },
+        card: {
+            no_title: "Untitled",
+            no_content: "No content available..."
+        },
+        drawer: {
+            title: "Edit Memo",
+            subtitle: "Drafting Area",
+            label_title: "Memo Title",
+            placeholder_title: "Enter title...",
+            label_content: "Content",
+            placeholder_content: "Start writing your thoughts here...",
+            label_tags: "Tags (Comma separated)",
+            placeholder_tags: "e.g. Work, Urgent, Ideas",
+            btn_delete: "Delete",
+            btn_save: "Save Changes",
+            save_success: "Saved successfully",
+            delete_success: "Memo removed"
+        },
+        page: {
+            new_btn: "New Memo",
+            pagination_showing: "Showing",
+            pagination_of: "of",
+            pagination_memos: "memos",
+            pagination_prev: "Previous",
+            pagination_next: "Next"
+        }
+    },
+    common: {
+        error_401: "Session expired, please login again",
+        error_network: "Network request failed, please check your connection"
+    },
     language: "English",
     loading: "Loading..."
 }
-
 export default lang;

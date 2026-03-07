@@ -20,12 +20,11 @@ const lang = {
         website: "网站介绍",
         memo: "备忘录",
         md: "编写Markdown",
-        person:{
-            main:"用户相关",
+        person: {
+            main: "用户相关",
             info: "个人信息",
             security: "安全设置",
         }
-
     },
     auth: {
         register: {
@@ -65,7 +64,8 @@ const lang = {
                 username: "用户名",
                 userid: "用户 ID",
                 created_at: "注册时间",
-                save: "保存修改"
+                save: "保存修改",
+                success: "资料修改成功"
             }
         },
         security: {
@@ -75,13 +75,16 @@ const lang = {
                 old_label: "原密码",
                 new_label: "新密码",
                 confirm_label: "确认新密码",
-                submit: "保存密码"
+                submit: "保存密码",
+                mismatch: "两次输入的新密码不一致",
+                success: "密码修改成功"
             },
             danger: {
                 title: "注销账号",
                 subtitle: "该操作不可撤销，请谨慎处理",
                 description: "注销后，所有与此账号关联的数据（备忘录、上传的头像等）将被永久从服务器移除，无法找回。",
-                submit: "永久注销账号"
+                submit: "永久注销账号",
+                confirm: "确定要永久注销账户吗？该操作将删除所有数据且无法恢复。"
             },
             aside: {
                 title: "安全建议",
@@ -113,7 +116,9 @@ const lang = {
             label_tags: "标签 (用英文逗号分隔)",
             placeholder_tags: "例如: 工作, 紧急, 灵感",
             btn_delete: "删除",
-            btn_save: "保存修改"
+            btn_save: "保存修改",
+            save_success: "保存成功",
+            delete_success: "已成功移除"
         },
         page: {
             new_btn: "新建备忘录",
@@ -123,6 +128,10 @@ const lang = {
             pagination_prev: "上一页",
             pagination_next: "下一页"
         }
+    },
+    common: {
+        error_401: "身份验证已过期，请重新登录",
+        error_network: "网络请求发生异常，请检查网络连接"
     },
     language: "简体中文",
     loading: "加载中..."

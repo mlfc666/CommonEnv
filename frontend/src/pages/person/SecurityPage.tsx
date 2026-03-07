@@ -1,37 +1,34 @@
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { TrashIcon, ShieldCheckIcon, KeyIcon } from "@heroicons/react/24/outline";
-import { userService } from "../../services/userService.ts";
+import React, {useState, useEffect} from "react";
+import {useTranslation} from "react-i18next";
+import {useNavigate} from "react-router-dom";
+import {TrashIcon, ShieldCheckIcon, KeyIcon} from "@heroicons/react/24/outline";
+import {userService} from "../../services/userService.ts";
 
 // 修改密码组件负责用户输入收集与本地一致性校验逻辑
 const PasswordForm: React.FC = () => {
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const [oldPassword, setOldPassword] = useState<string>("");
     const [newPassword, setNewPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
 
     // 处理密码提交并仅对核心凭据执行哈希与上传
     const handleSubmit = async () => {
-        // 在本地执行两次新密码的一致性校验
         if (newPassword !== confirmPassword) {
-            alert("两次输入的新密码不一致");
+            alert(t('person.security.password.mismatch'));
             return;
         }
 
         try {
-            // 仅对需要发送至服务端的凭据进行哈希计算
             const hashedOld = await userService.hashPassword(oldPassword);
             const hashedNew = await userService.hashPassword(newPassword);
 
-            // 调用接口时仅传入后端所需的旧密码与新密码字段
             const res = await userService.updatePassword({
                 oldPassword: hashedOld,
                 newPassword: hashedNew
             });
 
             if (res.code === 200) {
-                alert("密码修改成功");
+                alert(t('person.security.password.success'));
                 setOldPassword("");
                 setNewPassword("");
                 setConfirmPassword("");
@@ -39,17 +36,17 @@ const PasswordForm: React.FC = () => {
                 alert(res.message);
             }
         } catch (error) {
-            console.error("执行密码更新请求时发生错误" +  error);
+            console.error(t('common.error_network') + error);
         }
     };
 
     return (
-        <div className="card bg-base-100 border border-base-300 rounded-lg shadow-none">
+        <div className="card bg-base-100 border border-base-300 rounded-lg shadow-none text-base-content">
             <div className="card-body gap-8 p-10">
                 <div className="flex items-center gap-4 border-b border-base-200 pb-6">
-                    <div className="p-3 bg-base-200 rounded-lg"><KeyIcon className="w-6 h-6" /></div>
+                    <div className="p-3 bg-base-200 rounded-lg"><KeyIcon className="w-6 h-6"/></div>
                     <div>
-                        <h2 className="text-xl font-bold text-base-content">{t('person.security.password.title')}</h2>
+                        <h2 className="text-xl font-bold">{t('person.security.password.title')}</h2>
                         <p className="text-sm opacity-50">{t('person.security.password.subtitle')}</p>
                     </div>
                 </div>
@@ -106,12 +103,12 @@ const PasswordForm: React.FC = () => {
 
 // 危险操作区块处理账户的注销流程与状态清理逻辑
 const DangerZone: React.FC = () => {
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const navigate = useNavigate();
 
     // 弹出二次确认框并在用户同意后执行销户操作
     const handleDeleteAccount = async () => {
-        if (!window.confirm("确定要永久注销账户吗？该操作将删除所有数据且无法恢复。")) return;
+        if (!window.confirm(t('person.security.danger.confirm'))) return;
         try {
             const res = await userService.deleteAccount();
             if (res.code === 200) {
@@ -121,21 +118,21 @@ const DangerZone: React.FC = () => {
                 alert(res.message);
             }
         } catch (error) {
-            console.error("执行注销账户请求时发生错误" +  error);
+            console.error(t('common.error_network') + error);
         }
     };
 
     return (
-        <div className="card bg-base-100 border border-base-300 rounded-lg shadow-none">
+        <div className="card bg-base-100 border border-base-300 rounded-lg shadow-none text-base-content">
             <div className="card-body gap-6 p-10">
                 <div className="flex items-center gap-4 border-b border-base-200 pb-6">
-                    <div className="p-3 bg-base-200 rounded-lg text-error"><TrashIcon className="w-6 h-6" /></div>
+                    <div className="p-3 bg-base-200 rounded-lg text-error"><TrashIcon className="w-6 h-6"/></div>
                     <div>
                         <h2 className="text-xl font-bold text-error">{t('person.security.danger.title')}</h2>
                         <p className="text-sm opacity-50">{t('person.security.danger.subtitle')}</p>
                     </div>
                 </div>
-                <p className="text-sm opacity-60 leading-relaxed text-base-content">{t('person.security.danger.description')}</p>
+                <p className="text-sm opacity-60 leading-relaxed">{t('person.security.danger.description')}</p>
                 <div className="card-actions justify-start">
                     <button
                         onClick={handleDeleteAccount}
@@ -151,13 +148,13 @@ const DangerZone: React.FC = () => {
 
 // 安全建议组件展示账号保护的最佳实践方案
 const SecurityAside: React.FC = () => {
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     return (
         <aside className="lg:col-span-1">
             <div className="card bg-base-100 border border-base-300 rounded-lg shadow-none h-full text-base-content">
                 <div className="card-body gap-6 p-10">
                     <div className="flex items-center gap-3">
-                        <ShieldCheckIcon className="w-6 h-6 text-success" />
+                        <ShieldCheckIcon className="w-6 h-6 text-success"/>
                         <h3 className="text-lg font-bold">{t('person.security.aside.title')}</h3>
                     </div>
                     <div className="text-sm opacity-70 space-y-6">
@@ -170,15 +167,36 @@ const SecurityAside: React.FC = () => {
     );
 };
 
-// 安全设置主页面容器负责协调内部功能组件的布局排布
+// 安全设置主页面容器负责执行初始身份校验与数据流分发
 export default function SecurityPage() {
+    const navigate = useNavigate();
+
+    // 组件挂载时触发身份令牌有效性核验流程
+    useEffect(() => {
+        let isMounted = true;
+        const verifyAuth = async () => {
+            try {
+                const res = await userService.getUserInfo();
+                if (isMounted && res.code !== 200) {
+                    navigate("/login");
+                }
+            } catch {
+                if (isMounted) navigate("/login");
+            }
+        };
+        void verifyAuth();
+        return () => {
+            isMounted = false;
+        };
+    }, [navigate]);
+
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
-                <PasswordForm />
-                <DangerZone />
+                <PasswordForm/>
+                <DangerZone/>
             </div>
-            <SecurityAside />
+            <SecurityAside/>
         </div>
     );
 }
