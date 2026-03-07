@@ -41,6 +41,7 @@ export const useRemoteMarkdown = (fileName: string) => {
 
                 if (!response.ok) {
                     console.error(`Markdown fetch failed: ${response.status}`);
+                    setError(`Failed to load document: ${fileName}`);
                     return;
                 }
 

@@ -1,7 +1,7 @@
 const lang = {
     components: {
         navbar: {
-            name: "觉知Code",
+            name: "觉知备忘录",
             Theme: "主题列表"
         },
         CodeBlock: {
