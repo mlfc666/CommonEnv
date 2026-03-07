@@ -2,102 +2,115 @@ import {useTranslation} from "react-i18next";
 import {setTheme, type ThemeInfo, themeOptions} from "../manager/ThemeManger.ts";
 import {type LanguageInfo, languageOptions} from "../manager/i18n.ts";
 import type {i18n} from "i18next";
-import {LanguageIcon, SparklesIcon} from "@heroicons/react/24/outline";
+import {HandRaisedIcon, LanguageIcon, SparklesIcon} from "@heroicons/react/24/outline";
+import type {User} from "../types/User.ts";
 
-// 合并后的参数类型（包含 i18n）
-interface LanguageChoiceProps extends LanguageInfo {
-    i18n: i18n;
+// 主题下拉
+function ThemeDropdown() {
+    const {t} = useTranslation();
+    return (
+        // 移除了 dropdown-hover，改为普通 dropdown
+        <div className="dropdown dropdown-end z-100">
+            <button tabIndex={0} role="button" className="btn btn-ghost">
+                <SparklesIcon className="w-6 h-6"/>
+                <span className="hidden sm:inline">{t("components.navbar.Theme")}</span>
+            </button>
+            <ul tabIndex={0}
+                className="dropdown-content menu bg-base-200 rounded-box w-52 p-2 shadow-2xl border border-base-300 mt-2">
+                {themeOptions.map((theme: ThemeInfo) => (
+                    <li key={theme.value}>
+                        <button onClick={() => setTheme(theme.value)} className="btn btn-sm btn-ghost justify-start">
+                            {theme.label}
+                        </button>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 }
 
-function ThemeChoice({label, value}: ThemeInfo) {
-    return <>
-        <li>
-            <input
-                type="radio"
-                name="theme-dropdown"
-                className="theme-controller w-full btn btn-sm btn-block btn-ghost justify-start"
-                aria-label={label}
-                value={value}
-                onChange={(theme) => {
-                    setTheme(theme.target.value)
-                }}
-            />
-        </li>
-    </>
+// 语言下拉
+function LanguageDropdown({i18n}: { i18n: i18n }) {
+    const {t} = useTranslation();
+    return (
+        <div className="dropdown dropdown-end z-100">
+            <button tabIndex={0} role="button" className="btn btn-ghost">
+                <LanguageIcon className="w-6 h-6"/>
+                <span className="hidden sm:inline">{t("language")}</span>
+            </button>
+            <ul tabIndex={0}
+                className="dropdown-content menu bg-base-200 rounded-box w-40 p-2 shadow-2xl border border-base-300 mt-2">
+                {languageOptions.map((lang: LanguageInfo) => (
+                    <li key={lang.language}>
+                        <button onClick={() => void i18n.changeLanguage(lang.language)}
+                                className="btn btn-sm btn-ghost justify-start">
+                            {lang.label}
+                        </button>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 }
 
-function LanguageChoice({label, language, i18n}: LanguageChoiceProps) {
-    return <>
-        <li>
-            <input
-                type="radio"
-                name="language-dropdown"
-                className="w-full btn btn-sm btn-block btn-ghost justify-start"
-                aria-label={label}
-                value={language}
-                onChange={(language) => {
-                    void i18n.changeLanguage(language.target.value)
-                }}
-            />
-        </li>
-    </>
+// 用户头像下拉
+function UserDropdown({user}: { user: User }) {
+    const formatDate = (ts: number) => new Date(ts).toLocaleDateString();
+
+    return (
+        <div className="dropdown dropdown-end z-100">
+            <button tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar ml-2 border border-base-300">
+                <div className="w-9 rounded-full">
+                    <img alt="User Avatar" src={user.avatar}/>
+                </div>
+            </button>
+
+            <ul tabIndex={0}
+                className="menu dropdown-content p-2 shadow-2xl bg-base-200 rounded-box w-64 border border-base-300 mt-2">
+                <li className="menu-title px-4 pt-2 pb-1 border-b border-base-300">
+                    <div className="flex flex-col gap-1">
+                        <span className="text-lg font-bold text-base-content">{user.username}</span>
+                        <div className="flex justify-between text-xs opacity-60 font-mono">
+                            <span>UID: {user.id}</span>
+                        </div>
+                        <span className="text-xs opacity-60">注册时间: {formatDate(user.createTime)}</span>
+                    </div>
+                </li>
+                <li className="mt-1">
+                    <button className="text-error hover:bg-error/10">
+                        <HandRaisedIcon className="w-5 h-5"/>
+                        退出登录
+                    </button>
+                </li>
+            </ul>
+        </div>
+    );
 }
 
+// 主组件
 export function Navbar() {
     const {t, i18n} = useTranslation();
-    return <>
+
+    const mockUser: User = {
+        username: "小A",
+        id: 1,
+        avatar: "/logo.webp",
+        createTime: 1700000000000
+    };
+
+    return (
         <div className="navbar bg-base-100 shadow-sm">
-            {/*导航条的开始部分*/}
             <div className="navbar-start">
-                {/*Logo*/}
                 <div className="avatar ml-4 mr-2">
-                    <div className="w-12  rounded-lg">
-                        <img src="/logo.webp" alt={"Logo"}/>
-                    </div>
+                    <div className="w-12 rounded-lg"><img src="/logo.webp" alt="Logo"/></div>
                 </div>
-                {/*团队名称*/}
-                {/*下面这个样式的代码是必须的，不然会被吞样式*/}
-                <a
-                    className={"btn btn-ghost text-left whitespace-pre-line text-xl"}>
-                    {t('components.navbar.name')}
-                </a>
+                <a className="btn btn-ghost text-xl">{t('components.navbar.name')}</a>
             </div>
-            {/*最右侧的一些按钮*/}
-            <div className="navbar-end">
-                {/*切换语言的按钮*/}
-                <div className="dropdown dropdown-end z-100">
-                    <button className="btn btn-ghost">
-                        <SparklesIcon className={"w-6 h-6"}/>
-                        {t("components.navbar.Theme")}
-                    </button>
-                    <ul className="dropdown-content menu bg-base-200 rounded-box z-1 w-52 p-2 shadow-2xl">
-                        {themeOptions.map((theme) => (
-                            <ThemeChoice
-                                key={theme.value}
-                                label={theme.label}
-                                value={theme.value}
-                            />
-                        ))}
-                    </ul>
-                </div>
-                {/*切换主题的按钮*/}
-                <div className="dropdown dropdown-end z-100">
-                    <button className="btn btn-ghost">
-                        <LanguageIcon className={"w-6 h-6"}/>
-                        {t("language")}
-                    </button>
-                    <ul className="dropdown-content menu bg-base-200 rounded-box z-1 w-52 p-2 shadow-2xl">
-                        {languageOptions.map((language) => {
-                            return <LanguageChoice
-                                key={language.language}
-                                label={language.label}
-                                language={language.language}
-                                i18n={i18n}
-                            />
-                        })}
-                    </ul>
-                </div>
+            <div className="navbar-end gap-1 mr-2">
+                <ThemeDropdown/>
+                <LanguageDropdown i18n={i18n}/>
+                <UserDropdown user={mockUser}/>
             </div>
         </div>
-    </>
+    );
 }
