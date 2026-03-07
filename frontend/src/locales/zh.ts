@@ -38,19 +38,19 @@ const lang = {
             has_account: "已有账号?",
             login_link: "点此登录",
             cf_error: "请完成人机验证"
-        }
-    },
-    login: {
-        title: "欢迎回来",
-        subtitle: "请输入您的凭据以访问控制面板",
-        username_label: "用户名",
-        username_placeholder: "输入您的用户名",
-        password_label: "密码",
-        password_placeholder: "••••••••",
-        submit: "登录系统",
-        no_account: "还没有账号?",
-        register_link: "立即注册",
-        cf_error: "请完成人机验证"
+        },
+        login: {
+            title: "欢迎回来",
+            subtitle: "请输入您的凭据以访问控制面板",
+            username_label: "用户名",
+            username_placeholder: "输入您的用户名",
+            password_label: "密码",
+            password_placeholder: "••••••••",
+            submit: "登录系统",
+            no_account: "还没有账号?",
+            register_link: "立即注册",
+            cf_error: "请完成人机验证"
+        },
     },
     person: {
         info: {

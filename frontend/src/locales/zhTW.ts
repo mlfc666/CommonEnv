@@ -40,19 +40,19 @@ const lang: LanguageInfo = {
             has_account: "已有賬號?",
             login_link: "點此登錄",
             cf_error: "請完成人機驗證"
+        },
+        login: {
+            title: "歡迎回來",
+            subtitle: "請輸入您的憑據以訪問控製面板",
+            username_label: "用戶名",
+            username_placeholder: "輸入您的用戶名",
+            password_label: "密碼",
+            password_placeholder: "••••••••",
+            submit: "登錄系統",
+            no_account: "還沒有賬號?",
+            register_link: "立即註冊",
+            cf_error: "請完成人機驗證"
         }
-    },
-    login: {
-        title: "歡迎回來",
-        subtitle: "請輸入您的憑據以訪問控製面板",
-        username_label: "用戶名",
-        username_placeholder: "輸入您的用戶名",
-        password_label: "密碼",
-        password_placeholder: "••••••••",
-        submit: "登錄系統",
-        no_account: "還沒有賬號?",
-        register_link: "立即註冊",
-        cf_error: "請完成人機驗證"
     },
     person: {
         info: {

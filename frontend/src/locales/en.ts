@@ -40,19 +40,19 @@ const lang: LanguageInfo = {
             has_account: "Already have an account?",
             login_link: "Login here",
             cf_error: "Please complete the human verification"
+        },
+        login: {
+            title: "Welcome Back",
+            subtitle: "Please enter your credentials to access the panel",
+            username_label: "Username",
+            username_placeholder: "Enter your username",
+            password_label: "Password",
+            password_placeholder: "••••••••",
+            submit: "Sign In",
+            no_account: "Don't have an account?",
+            register_link: "Register now",
+            cf_error: "Please complete the human verification"
         }
-    },
-    login: {
-        title: "Welcome Back",
-        subtitle: "Please enter your credentials to access the panel",
-        username_label: "Username",
-        username_placeholder: "Enter your username",
-        password_label: "Password",
-        password_placeholder: "••••••••",
-        submit: "Sign In",
-        no_account: "Don't have an account?",
-        register_link: "Register now",
-        cf_error: "Please complete the human verification"
     },
     person: {
         info: {
