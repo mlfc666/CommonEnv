@@ -16,6 +16,7 @@ import week4.framework.core.AuthValidator;
 import week4.framework.core.BeanContainer;
 import week4.framework.core.DispatcherHandler;
 import week4.framework.core.RouteScanner;
+import week4.handlers.MasterHandler;
 import week4.handlers.StaticHandler;
 
 import java.net.InetSocketAddress;
@@ -53,10 +54,7 @@ public class WebServer {
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
 
         // 注册路由处理器 (Context Mapping)
-        // 优先匹配 /api 路径，框架会根据扫描到的路由表进行分发
-        server.createContext("/api", new DispatcherHandler());
-        // 处理静态资源逻辑
-        server.createContext("/", new StaticHandler());
+        server.createContext("/", new MasterHandler());
 
         // 配置线程调度与启动
         server.setExecutor(null);
