@@ -2,7 +2,6 @@
 
 ## 查看Api设计文档
 * **API说明文档**：[查看 Api 设计文档](./API_README.md)
-* 
 ## 1. 项目基础与构建配置 (Build & Base)
 
 前端基于 Vite + React + TypeScript 架构，整合了 Tailwind CSS 与 DaisyUI 提升 UI 开发效率。
