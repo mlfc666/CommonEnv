@@ -11,7 +11,7 @@ import java.time.Duration;
 
 public class CloudflareUtils {
     private static final String SITEVERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
-    private static final String SECRET_KEY = "0x4AAAAAACnWdDamP6MFEeXWutp0jb_MGJw"; // 从CF后台获取
+    private static final String SECRET_KEY = "###"; // 从CF后台获取
     private static final HttpClient httpClient = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(5))
             .build();
